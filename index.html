@@ -171,15 +171,11 @@
             <!-- Logged User Info -->
             <div class="px-4 py-3 bg-slate-50/80 border-b border-slate-100">
                 <div class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Usuário Conectado</div>
-                <div id="sidebar-user-card" class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="sidebar-user-card" class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs"></div>
             </div>
 
             <!-- Navigation Links -->
-            <nav id="desktop-nav" class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-                <!-- Populated dynamically based on role -->
-            </nav>
+            <nav id="desktop-nav" class="flex-1 px-3 py-4 space-y-1 overflow-y-auto"></nav>
 
             <!-- Footer Actions -->
             <div class="p-4 border-t border-slate-100 space-y-2">
@@ -221,9 +217,7 @@
                     </button>
 
                     <!-- Role Pill Badge -->
-                    <div id="header-role-pill" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-sage-100 text-sage-800 border border-sage-200">
-                        <!-- Populated via JS -->
-                    </div>
+                    <div id="header-role-pill" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-sage-100 text-sage-800 border border-sage-200"></div>
 
                     <!-- Mobile Logout Button -->
                     <button onclick="handleLogout()" class="md:hidden p-2 text-slate-500 hover:text-rose-600 rounded-lg" title="Sair">
@@ -232,25 +226,21 @@
                 </div>
             </header>
 
-            <!-- Assigned Psychologists Sub-banner for PSICOLOGO Role -->
+            <!-- Assigned Psychologist Sub-banner for PSICOLOGO Role -->
             <div id="psych-scope-banner" class="hidden bg-sage-700 text-white px-4 sm:px-6 py-2.5 text-xs sm:text-sm flex flex-wrap items-center justify-between gap-2">
                 <div class="flex items-center gap-2">
                     <i data-lucide="shield" class="w-4 h-4 text-sage-200 shrink-0"></i>
-                    <span id="psych-scope-text">Quadro de psicólogos designado a você:</span>
+                    <span id="psych-scope-text">Atendimento clínico focado nos seus pacientes:</span>
                 </div>
                 <div id="psych-scope-pills" class="flex flex-wrap gap-1.5"></div>
             </div>
 
             <!-- Main View Container -->
-            <main id="app-content" class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto fade-in">
-                <!-- Dynamic Content Injected Here -->
-            </main>
+            <main id="app-content" class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto fade-in"></main>
         </div>
 
         <!-- Mobile Bottom Navigation -->
-        <nav id="mobile-nav" class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 z-30 flex justify-around items-center h-16 px-1">
-            <!-- Populated dynamically -->
-        </nav>
+        <nav id="mobile-nav" class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 z-30 flex justify-around items-center h-16 px-1"></nav>
     </div>
 
     <!-- ================= MODALS ================= -->
@@ -269,26 +259,27 @@
             </div>
             <form id="form-user-permission" onsubmit="saveUserPermission(event)" class="p-6 space-y-4">
                 <input type="hidden" id="perm-user-id">
-                <div id="perm-user-summary" class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 text-sm">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="perm-user-summary" class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 text-sm"></div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Nível de Acesso / Perfil *</label>
                     <select id="perm-user-role" onchange="togglePermPsychBox()" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white">
                         <option value="PENDENTE">PENDENTE (Bloqueado / Aguardando)</option>
-                        <option value="PSICOLOGO">PSICÓLOGO (Acesso ao Quadro Designado + Repasses)</option>
+                        <option value="PSICOLOGO">PSICÓLOGO (Acompanha seus Pacientes, Agenda & Repasses)</option>
                         <option value="ATENDIMENTO">ATENDIMENTO (Agenda, Recepção & Pacientes)</option>
                         <option value="ADMIN">ADMIN (Acesso Total à Clínica)</option>
                     </select>
                 </div>
 
-                <div id="perm-psych-assignment-box" class="hidden space-y-2 pt-2 border-t border-slate-100">
-                    <label class="block text-xs font-semibold text-slate-700">Quais psicólogos este usuário pode visualizar/acompanhar?</label>
-                    <p class="text-[11px] text-slate-500">Marque o próprio psicólogo (e outros profissionais, caso seja supervisor).</p>
-                    <div id="perm-psych-checkboxes" class="space-y-2 max-h-48 overflow-y-auto pt-1">
-                        <!-- Populated via JS -->
+                <div id="perm-psych-assignment-box" class="hidden space-y-2.5 pt-2 border-t border-slate-100">
+                    <div class="flex items-center justify-between gap-2">
+                        <label class="block text-xs font-semibold text-slate-700">Ficha Clínica deste Psicólogo:</label>
+                        <button type="button" onclick="autoCreatePsychFromSelectedUser()" class="text-[11px] font-semibold text-sage-700 hover:underline shrink-0">
+                            + Criar ficha deste usuário
+                        </button>
                     </div>
+                    <p class="text-[11px] text-slate-500">O psicólogo verá apenas os próprios pacientes, agenda e repasses (sem acompanhar outros psicólogos).</p>
+                    <div id="perm-psych-checkboxes" class="space-y-2 max-h-48 overflow-y-auto pt-1"></div>
                 </div>
 
                 <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
@@ -496,6 +487,7 @@
             </div>
             <form id="form-psychologist" onsubmit="savePsychologist(event)" class="p-6 space-y-4">
                 <input type="hidden" id="psych-id">
+                <input type="hidden" id="psych-from-pat" value="false">
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo *</label>
                     <input type="text" id="psych-name" required placeholder="Ex: Dra. Helena Vasconcelos" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
@@ -570,7 +562,12 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Psicólogo Responsável *</label>
-                        <select id="pat-psychologist" required class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white"></select>
+                        <div class="flex gap-1.5">
+                            <select id="pat-psychologist" required class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white"></select>
+                            <button type="button" onclick="openPsychologistModal(null, true)" title="Cadastrar Novo Psicólogo" class="px-3 py-2 bg-sage-50 text-sage-700 hover:bg-sage-100 border border-sage-200 rounded-xl shrink-0">
+                                <i data-lucide="user-plus" class="w-4 h-4"></i>
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Valor Acordado / Sessão (R$) *</label>
@@ -629,7 +626,7 @@
     <script>
         /**
          * ============================================================================
-         * CONFIGURAÇÃO DO SUPABASE — COLE SUAS CREDENCIAIS ABAIXO
+         * CONFIGURAÇÃO DO SUPABASE
          * ============================================================================
          */
         const SUPABASE_URL = 'https://evshiibmnjmfhdmroyes.supabase.co';
@@ -651,15 +648,15 @@
         const TODAY_STR = getOffsetDateStr(0);
         const TOMORROW_STR = getOffsetDateStr(1);
 
-        let currentUser = null;        // Objeto Auth do Supabase
-        let currentUserProfile = null; // Registro em user_profiles { id, email, full_name, role, assigned_psych_ids }
+        let currentUser = null;
+        let currentUserProfile = null;
         let currentTab = 'dashboard';
 
         let db = {
             psychologists: [],
             patients: [],
             appointments: [],
-            userProfiles: [] // Preenchido apenas quando o usuário logado é ADMIN
+            userProfiles: []
         };
 
         let selectedAgendaDate = TODAY_STR;
@@ -782,7 +779,6 @@
 
             currentUser = session.user;
 
-            // Busca o perfil do usuário na tabela user_profiles
             const { data: profile, error: profError } = await supabaseClient
                 .from('user_profiles')
                 .select('*')
@@ -797,14 +793,12 @@
 
             currentUserProfile = profile;
 
-            // Se status for PENDENTE, bloqueia acesso ao sistema e mostra tela de espera
             if (profile.role === 'PENDENTE') {
                 document.getElementById('pending-user-info').innerHTML = `Olá, <strong>${profile.full_name}</strong> (${profile.email}). Seu cadastro está com status <strong>Pendente</strong>. Assim que o Administrador liberar seu acesso (como Psicólogo ou Atendimento), clique no botão abaixo para entrar.`;
                 showScreen('screen-pending');
                 return;
             }
 
-            // Usuário aprovado (ADMIN, PSICOLOGO ou ATENDIMENTO) -> Carrega dados do banco
             currentTab = ROLE_MENUS[profile.role][0].id;
             await syncAllDataFromSupabase(false);
             showScreen('screen-app');
@@ -857,7 +851,6 @@
                     report: a.report || null
                 }));
 
-                // Se for ADMIN, busca também a lista completa de usuários (incluindo PENDENTES)
                 if (currentUserProfile?.role === 'ADMIN') {
                     const usersRes = await supabaseClient
                         .from('user_profiles')
@@ -903,12 +896,22 @@
             return db.patients.find(p => p.id === id) || { name: 'Paciente Removido', phone: '', sessionFee: 0 };
         }
 
+        /**
+         * ADMIN e ATENDIMENTO acessam todos os profissionais da grade/clínica.
+         * PSICOLOGO acessa EXCLUSIVAMENTE a sua própria ficha profissional (não acompanha outros psicólogos).
+         */
         function getAccessiblePsychIds() {
             const role = currentUserProfile?.role;
             if (role === 'ADMIN' || role === 'ATENDIMENTO') {
                 return db.psychologists.map(p => p.id);
             }
-            return currentUserProfile?.assigned_psych_ids || [];
+            const assigned = currentUserProfile?.assigned_psych_ids || [];
+            if (assigned.length > 0) return [assigned[0]];
+
+            const matchedByName = db.psychologists.find(
+                p => p.name.trim().toLowerCase() === (currentUserProfile?.full_name || '').trim().toLowerCase()
+            );
+            return matchedByName ? [matchedByName.id] : [];
         }
 
         function getColorClasses(color) {
@@ -980,9 +983,9 @@
                 { id: 'psicologos', label: 'Psicólogos', icon: 'stethoscope' }
             ],
             PSICOLOGO: [
-                { id: 'psych-dashboard', label: 'Meus Repasses', icon: 'badge-dollar-sign' },
+                { id: 'psych-patients', label: 'Meus Pacientes', icon: 'users' },
                 { id: 'psych-agenda', label: 'Minha Agenda', icon: 'calendar' },
-                { id: 'psych-patients', label: 'Pacientes & Evoluções', icon: 'file-heart' }
+                { id: 'psych-dashboard', label: 'Meus Repasses', icon: 'badge-dollar-sign' }
             ],
             ATENDIMENTO: [
                 { id: 'reception-grid', label: 'Grade de Horários', icon: 'calendar-range' },
@@ -1004,7 +1007,6 @@
                 ATENDIMENTO: { title: 'Atendimento', badgeClass: 'bg-amber-100 text-amber-800 border-amber-200', icon: 'calendar-check' }
             }[role];
 
-            // Sidebar User Card
             document.getElementById('sidebar-user-card').innerHTML = `
                 <div class="font-bold text-xs text-slate-900 truncate">${currentUserProfile.full_name}</div>
                 <div class="text-[11px] text-slate-400 truncate mb-2">${currentUserProfile.email}</div>
@@ -1013,12 +1015,10 @@
                 </span>
             `;
 
-            // Topbar Role Pill
             const pillEl = document.getElementById('header-role-pill');
             pillEl.className = `px-3 py-1.5 rounded-xl text-xs font-bold border flex items-center gap-1.5 ${roleMeta.badgeClass}`;
             pillEl.innerHTML = `<i data-lucide="${roleMeta.icon}" class="w-3.5 h-3.5"></i><span>Perfil: ${roleMeta.title}</span>`;
 
-            // Pending Users Alert Button for Admin
             const pendingAlertBtn = document.getElementById('admin-pending-alert-btn');
             if (role === 'ADMIN') {
                 const pendingCount = db.userProfiles.filter(u => u.role === 'PENDENTE').length;
@@ -1034,19 +1034,19 @@
                 pendingAlertBtn.classList.add('hidden');
             }
 
-            // Psychologist Scope Banner
             const psychScopeBanner = document.getElementById('psych-scope-banner');
             if (role === 'PSICOLOGO') {
                 const assignedList = getAccessiblePsychIds().map(id => getPsychById(id));
+                const myPatientsCount = db.patients.filter(p => getAccessiblePsychIds().includes(p.psychologistId)).length;
                 psychScopeBanner.classList.remove('hidden');
+                document.getElementById('psych-scope-text').innerHTML = `Espaço clínico individual • <strong>${myPatientsCount}</strong> paciente(s) sob seu acompanhamento:`;
                 document.getElementById('psych-scope-pills').innerHTML = assignedList.length
                     ? assignedList.map(p => `<span class="bg-sage-800/80 border border-sage-500/50 px-2.5 py-0.5 rounded-full text-xs font-medium">${p.name}</span>`).join('')
-                    : `<span class="bg-rose-600 px-2.5 py-0.5 rounded-full text-xs">Aguardando o Admin vincular seu quadro de psicólogos</span>`;
+                    : `<span class="bg-rose-600 px-2.5 py-0.5 rounded-full text-xs">Aguardando o Admin vincular seu perfil</span>`;
             } else {
                 psychScopeBanner.classList.add('hidden');
             }
 
-            // Navigation Links
             const menuItems = ROLE_MENUS[role];
             const pendingCount = role === 'ADMIN' ? db.userProfiles.filter(u => u.role === 'PENDENTE').length : 0;
 
@@ -1073,7 +1073,7 @@
                         active ? 'text-sage-700 font-semibold' : 'text-slate-400 hover:text-slate-600'
                     }">
                         <i data-lucide="${item.icon}" class="w-5 h-5 mb-0.5 ${active ? 'text-sage-600' : ''}"></i>
-                        <span class="truncate max-w-[75px]">${item.label.split(' ')[0]}</span>
+                        <span class="truncate max-w-[75px]">${item.label.split(' ')[1] || item.label}</span>
                         ${(item.id === 'usuarios' && pendingCount > 0) ? `<span class="w-2 h-2 rounded-full bg-amber-500 absolute top-1.5 right-4"></span>` : ''}
                     </button>
                 `;
@@ -1089,7 +1089,6 @@
             const role = currentUserProfile.role;
 
             switch (currentTab) {
-                // ADMIN
                 case 'dashboard':
                     container.innerHTML = renderAdminDashboard();
                     break;
@@ -1108,8 +1107,6 @@
                 case 'psicologos':
                     container.innerHTML = renderAdminPsychologists();
                     break;
-
-                // PSICÓLOGO
                 case 'psych-dashboard':
                     container.innerHTML = renderPsychologistFinance();
                     break;
@@ -1119,8 +1116,6 @@
                 case 'psych-patients':
                     container.innerHTML = renderPsychologistPatients();
                     break;
-
-                // ATENDIMENTO
                 case 'reception-grid':
                     container.innerHTML = renderReceptionAvailabilityGrid();
                     break;
@@ -1130,7 +1125,6 @@
                 case 'reception-patients':
                     container.innerHTML = renderPatientsDirectory(false);
                     break;
-
                 default:
                     container.innerHTML = renderAdminDashboard();
             }
@@ -1140,7 +1134,7 @@
 
         /**
          * ============================================================================
-         * ADMIN: GESTÃO E LIBERAÇÃO DE USUÁRIOS (PENDENTES / PSICÓLOGOS / ATENDIMENTO)
+         * ADMIN: GESTÃO E LIBERAÇÃO DE USUÁRIOS
          * ============================================================================
          */
         function renderAdminUsersApproval() {
@@ -1154,7 +1148,6 @@
                         <p class="text-sm text-slate-500">Aprove novos cadastros pendentes e defina se cada pessoa terá perfil de <strong>Psicólogo</strong>, <strong>Atendimento</strong> ou <strong>Admin</strong>.</p>
                     </div>
 
-                    <!-- Fila de Aprovação (Pendentes) -->
                     <div class="bg-white rounded-2xl border ${pendingUsers.length ? 'border-amber-300 shadow-sm' : 'border-slate-200/80'} overflow-hidden">
                         <div class="px-6 py-4 border-b border-slate-100 ${pendingUsers.length ? 'bg-amber-50/80' : 'bg-slate-50/60'} flex items-center justify-between">
                             <h3 class="font-bold text-slate-800 flex items-center gap-2">
@@ -1165,7 +1158,7 @@
 
                         ${pendingUsers.length === 0 ? `
                             <div class="p-8 text-center text-sm text-slate-400">
-                                Nenhuma solicitação pendente no momento. Quando alguém se cadastrar no site, aparecerá aqui para sua aprovação.
+                                Nenhuma solicitação pendente no momento.
                             </div>
                         ` : `
                             <div class="divide-y divide-slate-100">
@@ -1190,7 +1183,6 @@
                         `}
                     </div>
 
-                    <!-- Usuários Ativos no Sistema -->
                     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
                         <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/60">
                             <h3 class="font-bold text-slate-800 flex items-center gap-2">
@@ -1218,10 +1210,10 @@
                                             <div class="text-xs text-slate-500 mt-0.5">${u.email}</div>
                                             ${u.role === 'PSICOLOGO' ? `
                                                 <div class="flex flex-wrap gap-1.5 mt-2">
-                                                    <span class="text-[11px] text-slate-400">Quadro designado:</span>
+                                                    <span class="text-[11px] text-slate-400">Ficha clínica vinculada:</span>
                                                     ${assignedNames.length
                                                         ? assignedNames.map(n => `<span class="px-2 py-0.5 rounded-md bg-sky-50 text-sky-800 border border-sky-200 text-[11px] font-medium">${n}</span>`).join('')
-                                                        : '<span class="text-[11px] text-rose-600 font-medium">Nenhum psicólogo vinculado</span>'}
+                                                        : '<span class="text-[11px] text-amber-700 font-medium">Será vinculada automaticamente</span>'}
                                                 </div>
                                             ` : ''}
                                         </div>
@@ -1237,6 +1229,23 @@
             `;
         }
 
+        function renderPermPsychCheckboxes(selectedIds = []) {
+            const box = document.getElementById('perm-psych-checkboxes');
+            if (db.psychologists.length === 0) {
+                box.innerHTML = `<div class="text-xs text-sky-800 bg-sky-50 border border-sky-200 p-3 rounded-xl">Nenhuma ficha de psicólogo criada ainda. Ao clicar em <strong>Salvar Acesso</strong> (ou em <strong>+ Criar ficha deste usuário</strong>), a ficha será criada e vinculada automaticamente.</div>`;
+                return;
+            }
+            box.innerHTML = db.psychologists.map(p => `
+                <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                    <input type="radio" name="permPsychRadio" value="${p.id}" ${selectedIds.includes(p.id) ? 'checked' : ''} class="w-4 h-4 text-sage-600">
+                    <div>
+                        <div class="text-xs font-bold text-slate-800">${p.name}</div>
+                        <div class="text-[11px] text-slate-400">CRP ${p.crp} • ${p.specialty}</div>
+                    </div>
+                </label>
+            `).join('');
+        }
+
         function openUserPermissionModal(userId) {
             const user = db.userProfiles.find(u => u.id === userId);
             if (!user) return;
@@ -1250,25 +1259,52 @@
             const roleSelect = document.getElementById('perm-user-role');
             roleSelect.value = user.role === 'PENDENTE' ? 'PSICOLOGO' : user.role;
 
-            const box = document.getElementById('perm-psych-checkboxes');
-            const assigned = user.assigned_psych_ids || [];
-
-            if (db.psychologists.length === 0) {
-                box.innerHTML = `<div class="text-xs text-amber-700 bg-amber-50 p-2.5 rounded-lg">Cadastre primeiro os psicólogos na aba <strong>Psicólogos</strong> para vinculá-los aqui.</div>`;
-            } else {
-                box.innerHTML = db.psychologists.map(p => `
-                    <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                        <input type="checkbox" name="permPsychCheck" value="${p.id}" ${assigned.includes(p.id) ? 'checked' : ''} class="w-4 h-4 text-sage-600 rounded">
-                        <div>
-                            <div class="text-xs font-bold text-slate-800">${p.name}</div>
-                            <div class="text-[11px] text-slate-400">CRP ${p.crp} • ${p.specialty}</div>
-                        </div>
-                    </label>
-                `).join('');
+            let assigned = user.assigned_psych_ids || [];
+            if (assigned.length === 0 && db.psychologists.length > 0) {
+                const matchByName = db.psychologists.find(p => p.name.trim().toLowerCase() === user.full_name.trim().toLowerCase());
+                if (matchByName) assigned = [matchByName.id];
             }
 
+            renderPermPsychCheckboxes(assigned);
             togglePermPsychBox();
             openModal('modal-user-permission');
+        }
+
+        async function ensurePsychProfileForUser(user) {
+            if (!user) return null;
+            const existing = db.psychologists.find(p => p.name.trim().toLowerCase() === user.full_name.trim().toLowerCase());
+            if (existing) return existing.id;
+
+            const newPsychId = 'psy-' + Date.now();
+            const { error } = await supabaseClient.from('psychologists').insert({
+                id: newPsychId,
+                name: user.full_name,
+                crp: 'A informar',
+                specialty: 'Psicologia Clínica',
+                share_percent: 70,
+                color: 'emerald',
+                active: true
+            });
+
+            if (error) {
+                showToast('Erro ao criar ficha de psicólogo: ' + error.message, 'error');
+                return null;
+            }
+
+            await syncAllDataFromSupabase(false);
+            return newPsychId;
+        }
+
+        async function autoCreatePsychFromSelectedUser() {
+            const userId = document.getElementById('perm-user-id').value;
+            const user = db.userProfiles.find(u => u.id === userId);
+            if (!user) return;
+
+            const createdOrExistingId = await ensurePsychProfileForUser(user);
+            if (!createdOrExistingId) return;
+
+            renderPermPsychCheckboxes([createdOrExistingId]);
+            showToast(`Ficha de psicólogo pronta e selecionada para ${user.full_name}!`, 'success');
         }
 
         function togglePermPsychBox() {
@@ -1285,9 +1321,18 @@
             e.preventDefault();
             const userId = document.getElementById('perm-user-id').value;
             const newRole = document.getElementById('perm-user-role').value;
-            const assignedIds = newRole === 'PSICOLOGO'
-                ? Array.from(document.querySelectorAll('input[name="permPsychCheck"]:checked')).map(cb => cb.value)
-                : [];
+            const user = db.userProfiles.find(u => u.id === userId);
+
+            let assignedIds = [];
+            if (newRole === 'PSICOLOGO') {
+                const selectedRadio = document.querySelector('input[name="permPsychRadio"]:checked');
+                if (selectedRadio) {
+                    assignedIds = [selectedRadio.value];
+                } else if (user) {
+                    const autoId = await ensurePsychProfileForUser(user);
+                    if (autoId) assignedIds = [autoId];
+                }
+            }
 
             const { error } = await supabaseClient
                 .from('user_profiles')
@@ -1379,15 +1424,14 @@
                         <div class="bg-sky-50 border border-sky-200 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div>
                                 <h3 class="font-bold text-sky-900 text-sm">Primeiro Passo: Cadastre os Psicólogos da Clínica</h3>
-                                <p class="text-xs text-sky-700 mt-0.5">Para começar a agendar pacientes e vincular contas de acesso, cadastre os profissionais na aba Psicólogos.</p>
+                                <p class="text-xs text-sky-700 mt-0.5">Para vincular psicólogos responsáveis aos pacientes e abrir a agenda, cadastre os profissionais na aba Psicólogos.</p>
                             </div>
-                            <button onclick="switchTab('psicologos')" class="px-4 py-2 bg-sky-600 text-white text-xs font-semibold rounded-xl shrink-0">
-                                Cadastrar Psicólogos →
+                            <button onclick="openPsychologistModal()" class="px-4 py-2 bg-sky-600 text-white text-xs font-semibold rounded-xl shrink-0">
+                                + Cadastrar Psicólogo
                             </button>
                         </div>
                     ` : ''}
 
-                    <!-- KPI Cards -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
                             <div class="flex items-center justify-between mb-3">
@@ -1434,7 +1478,6 @@
                         </div>
                     </div>
 
-                    <!-- Two Column Section -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                         <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
                             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
@@ -1706,7 +1749,7 @@
             const filteredApts = db.appointments.filter(apt => {
                 if (!accessibleIds.includes(apt.psychologistId)) return false;
                 if (selectedAgendaDate && apt.date !== selectedAgendaDate) return false;
-                if (selectedAgendaPsychFilter !== 'ALL' && apt.psychologistId !== selectedAgendaPsychFilter) return false;
+                if (isAdmin && selectedAgendaPsychFilter !== 'ALL' && apt.psychologistId !== selectedAgendaPsychFilter) return false;
                 return true;
             }).sort((a, b) => a.time.localeCompare(b.time));
 
@@ -1715,7 +1758,7 @@
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h2 class="text-xl font-bold text-slate-900">${isAdmin ? 'Agenda Global da Clínica' : 'Minha Agenda de Atendimentos'}</h2>
-                            <p class="text-sm text-slate-500">Visualize horários, status de comparecimento e realize evoluções clínicas.</p>
+                            <p class="text-sm text-slate-500">${isAdmin ? 'Visualize horários, status de comparecimento e realize evoluções clínicas.' : 'Seus atendimentos agendados com seus pacientes.'}</p>
                         </div>
                         <button onclick="openAppointmentModal(null, '${selectedAgendaDate}')" class="inline-flex items-center gap-2 px-4 py-2.5 bg-sage-600 hover:bg-sage-700 text-white text-sm font-semibold rounded-xl shadow-xs">
                             <i data-lucide="calendar-plus" class="w-4 h-4"></i>
@@ -1738,9 +1781,9 @@
                                 </button>
                             </div>
 
-                            ${accessibleIds.length > 1 ? `
+                            ${isAdmin && accessibleIds.length > 1 ? `
                                 <select onchange="selectedAgendaPsychFilter = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white">
-                                    <option value="ALL" ${selectedAgendaPsychFilter === 'ALL' ? 'selected' : ''}>Todos os Psicólogos Permitidos</option>
+                                    <option value="ALL" ${selectedAgendaPsychFilter === 'ALL' ? 'selected' : ''}>Todos os Psicólogos</option>
                                     ${accessibleIds.map(id => {
                                         const p = getPsychById(id);
                                         return `<option value="${id}" ${selectedAgendaPsychFilter === id ? 'selected' : ''}>${p.name}</option>`;
@@ -1781,8 +1824,7 @@
                                                 ${getPaymentBadge(apt.paymentStatus, apt.paymentMethod)}
                                             </div>
                                             <div class="text-xs text-slate-500 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
-                                                <span class="font-medium text-slate-700">${psy.name}</span>
-                                                <span>•</span>
+                                                ${isAdmin ? `<span class="font-medium text-slate-700">${psy.name}</span><span>•</span>` : ''}
                                                 <span>Valor: <strong>${formatCurrency(apt.value)}</strong></span>
                                                 ${apt.notes ? `<span>• <em class="text-slate-400">${apt.notes}</em></span>` : ''}
                                             </div>
@@ -1824,7 +1866,7 @@
 
         /**
          * ============================================================================
-         * 2. PSICÓLOGO VIEWS
+         * 2. PSICÓLOGO VIEWS (FOCO NOS SEUS PACIENTES, AGENDA E REPASSES)
          * ============================================================================
          */
         function renderPsychologistFinance() {
@@ -1854,7 +1896,7 @@
                 <div class="space-y-6">
                     <div>
                         <h2 class="text-xl font-bold text-slate-900">Meus Honorários & Repasses</h2>
-                        <p class="text-sm text-slate-500">Acompanhamento transparente dos valores a receber por sessão.</p>
+                        <p class="text-sm text-slate-500">Acompanhamento dos valores referentes aos seus pacientes atendidos.</p>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -1897,7 +1939,6 @@
                                     <tr class="bg-slate-50 text-[11px] font-semibold uppercase text-slate-500 border-b border-slate-200">
                                         <th class="py-3 px-4">Data / Hora</th>
                                         <th class="py-3 px-4">Paciente</th>
-                                        <th class="py-3 px-4">Profissional</th>
                                         <th class="py-3 px-3 text-right">Sessão</th>
                                         <th class="py-3 px-3 text-right">Seu Repasse</th>
                                         <th class="py-3 px-4">Status</th>
@@ -1905,7 +1946,7 @@
                                 </thead>
                                 <tbody class="divide-y divide-slate-100 text-sm">
                                     ${sortedApts.length === 0 ? `
-                                        <tr><td colspan="6" class="py-8 text-center text-slate-400">Nenhuma sessão encontrada para o seu quadro designado.</td></tr>
+                                        <tr><td colspan="5" class="py-8 text-center text-slate-400">Nenhuma sessão encontrada para os seus pacientes.</td></tr>
                                     ` : sortedApts.map(apt => {
                                         const pat = getPatientById(apt.patientId);
                                         const psy = getPsychById(apt.psychologistId);
@@ -1917,7 +1958,6 @@
                                                     <div class="text-xs text-slate-400">${apt.time} • ${apt.status}</div>
                                                 </td>
                                                 <td class="py-3.5 px-4 font-medium text-slate-800">${pat.name}</td>
-                                                <td class="py-3.5 px-4 text-xs text-slate-600">${psy.name} (${psy.sharePercent}%)</td>
                                                 <td class="py-3.5 px-3 text-right text-slate-500">${formatCurrency(apt.value)}</td>
                                                 <td class="py-3.5 px-3 text-right font-bold text-sage-700">${formatCurrency(myCut)}</td>
                                                 <td class="py-3.5 px-4">${getPaymentBadge(apt.paymentStatus, apt.paymentMethod)}</td>
@@ -1938,18 +1978,26 @@
 
             return `
                 <div class="space-y-6">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Meus Pacientes & Prontuário Clínico</h2>
-                        <p class="text-sm text-slate-500">Acesse o histórico de sessões e registre evoluções clínicas sigilosas.</p>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">Meus Pacientes & Acompanhamento Clínico</h2>
+                            <p class="text-sm text-slate-500">Lista dos seus pacientes vinculados para acompanhamento, sessões e evoluções clínicas.</p>
+                        </div>
+                        <button onclick="openPatientModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-sage-600 hover:bg-sage-700 text-white text-sm font-semibold rounded-xl shadow-xs">
+                            <i data-lucide="user-plus" class="w-4 h-4"></i>
+                            <span>Cadastrar Paciente</span>
+                        </button>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         ${myPatients.length === 0 ? `
-                            <div class="col-span-full bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-500">
-                                Nenhum paciente vinculado ao(s) psicólogo(s) designado(s) para você.
+                            <div class="col-span-full bg-white p-8 rounded-2xl border border-slate-200 text-center space-y-3">
+                                <p class="text-slate-500 text-sm">Você ainda não possui pacientes vinculados ao seu perfil.</p>
+                                <button onclick="openPatientModal()" class="px-4 py-2 bg-sage-600 text-white text-xs font-semibold rounded-xl">
+                                    + Cadastrar Meu Primeiro Paciente
+                                </button>
                             </div>
                         ` : myPatients.map(pat => {
-                            const psy = getPsychById(pat.psychologistId);
                             const patApts = db.appointments
                                 .filter(a => a.patientId === pat.id)
                                 .sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
@@ -1962,7 +2010,7 @@
                                         <div class="flex items-start justify-between gap-3">
                                             <div>
                                                 <h3 class="font-bold text-slate-900 text-base">${pat.name}</h3>
-                                                <div class="text-xs text-slate-500 mt-0.5">${pat.phone} • ${psy.name}</div>
+                                                <div class="text-xs text-slate-500 mt-0.5">${pat.phone} • Valor: ${formatCurrency(pat.sessionFee)}</div>
                                             </div>
                                             <span class="px-2.5 py-1 rounded-lg bg-sage-50 text-sage-800 border border-sage-200 text-xs font-semibold">
                                                 ${reportsCount} evoluções
@@ -1972,8 +2020,10 @@
                                         ${pat.notes ? `<p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl mt-3">${pat.notes}</p>` : ''}
 
                                         <div class="mt-4 space-y-2">
-                                            <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Sessões Recentes</div>
-                                            ${patApts.slice(0, 3).map(apt => `
+                                            <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Sessões do Paciente</div>
+                                            ${patApts.length === 0 ? `
+                                                <div class="text-xs text-slate-400 bg-slate-50 p-2.5 rounded-xl">Nenhuma sessão agendada ainda.</div>
+                                            ` : patApts.slice(0, 3).map(apt => `
                                                 <div class="flex items-center justify-between text-xs p-2 rounded-xl bg-slate-50/80 border border-slate-100">
                                                     <div>
                                                         <span class="font-semibold text-slate-700">${formatDateBR(apt.date)} (${apt.time})</span>
@@ -1987,16 +2037,21 @@
                                         </div>
                                     </div>
 
-                                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                                    <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
                                         <button onclick="openPatientHistoryModal('${pat.id}')" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-sage-700">
                                             <i data-lucide="book-open" class="w-4 h-4 text-sage-600"></i>
-                                            <span>Abrir Prontuário Completo</span>
+                                            <span>Prontuário</span>
                                         </button>
-                                        ${latestApt ? `
-                                            <button onclick="openSessionReportModal('${latestApt.id}')" class="px-3 py-1.5 bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold rounded-xl">
-                                                Nova Evolução
+                                        <div class="flex items-center gap-2">
+                                            <button onclick="openAppointmentModal(null, '${TODAY_STR}', '09:00', '${pat.psychologistId}', '${pat.id}')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl">
+                                                Agendar
                                             </button>
-                                        ` : ''}
+                                            ${latestApt ? `
+                                                <button onclick="openSessionReportModal('${latestApt.id}')" class="px-3 py-1.5 bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold rounded-xl">
+                                                    Evolução
+                                                </button>
+                                            ` : ''}
+                                        </div>
                                     </div>
                                 </div>
                             `;
@@ -2282,11 +2337,13 @@
             const psychSelect = document.getElementById('apt-psychologist');
             const patSelect = document.getElementById('apt-patient');
 
-            psychSelect.innerHTML = db.psychologists
-                .filter(p => p.active && accessibleIds.includes(p.id))
-                .map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            const allowedPsychs = db.psychologists.filter(p => p.active && accessibleIds.includes(p.id));
+            psychSelect.innerHTML = allowedPsychs.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
 
-            patSelect.innerHTML = db.patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            const allowedPatients = currentUserProfile?.role === 'PSICOLOGO'
+                ? db.patients.filter(p => accessibleIds.includes(p.psychologistId))
+                : db.patients;
+            patSelect.innerHTML = allowedPatients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
 
             if (aptId) {
                 const apt = db.appointments.find(a => a.id === aptId);
@@ -2304,8 +2361,12 @@
             } else {
                 document.getElementById('modal-appointment-title').innerHTML = `<i data-lucide="calendar-plus" class="w-5 h-5 text-sage-600"></i><span>Novo Agendamento</span>`;
                 document.getElementById('apt-id').value = '';
-                if (defaultPsychId) psychSelect.value = defaultPsychId;
-                if (defaultPatientId) patSelect.value = defaultPatientId;
+                if (defaultPsychId && Array.from(psychSelect.options).some(o => o.value === defaultPsychId)) {
+                    psychSelect.value = defaultPsychId;
+                }
+                if (defaultPatientId && Array.from(patSelect.options).some(o => o.value === defaultPatientId)) {
+                    patSelect.value = defaultPatientId;
+                }
                 document.getElementById('apt-date').value = defaultDate || TODAY_STR;
                 document.getElementById('apt-time').value = defaultTime || '09:00';
                 document.getElementById('apt-status').value = 'Agendada';
@@ -2531,7 +2592,8 @@
         }
 
         // --- Psicólogos ---
-        function openPsychologistModal(psychId = null) {
+        function openPsychologistModal(psychId = null, fromPat = false) {
+            document.getElementById('psych-from-pat').value = fromPat ? 'true' : 'false';
             if (psychId) {
                 const p = getPsychById(psychId);
                 document.getElementById('modal-psych-title').textContent = 'Editar Psicólogo(a)';
@@ -2558,8 +2620,10 @@
         async function savePsychologist(e) {
             e.preventDefault();
             const id = document.getElementById('psych-id').value;
+            const fromPat = document.getElementById('psych-from-pat').value === 'true';
+            const savedId = id || ('psy-' + Date.now());
             const payload = {
-                id: id || ('psy-' + Date.now()),
+                id: savedId,
                 name: document.getElementById('psych-name').value.trim(),
                 crp: document.getElementById('psych-crp').value.trim(),
                 share_percent: parseInt(document.getElementById('psych-share').value, 10) || 70,
@@ -2577,13 +2641,25 @@
             showToast('Profissional salvo com sucesso!', 'success');
             closeModal('modal-psychologist');
             await syncAllDataFromSupabase(false);
-            renderApp();
+
+            if (fromPat) {
+                const patPsychSelect = document.getElementById('pat-psychologist');
+                patPsychSelect.innerHTML = db.psychologists.filter(p => p.active).map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                patPsychSelect.value = savedId;
+            } else {
+                renderApp();
+            }
         }
 
         // --- Pacientes ---
         function openPatientModal(patientId = null, fromApt = false) {
             const psychSelect = document.getElementById('pat-psychologist');
-            psychSelect.innerHTML = db.psychologists.filter(p => p.active).map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            const accessibleIds = getAccessiblePsychIds();
+            const availablePsychs = currentUserProfile?.role === 'PSICOLOGO'
+                ? db.psychologists.filter(p => p.active && accessibleIds.includes(p.id))
+                : db.psychologists.filter(p => p.active);
+
+            psychSelect.innerHTML = availablePsychs.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
             document.getElementById('pat-from-apt').value = fromApt ? 'true' : 'false';
 
             if (patientId) {
@@ -2603,7 +2679,9 @@
                 document.getElementById('pat-phone').value = '';
                 document.getElementById('pat-cpf').value = '';
                 const preselectedPsych = document.getElementById('apt-psychologist')?.value;
-                if (preselectedPsych) psychSelect.value = preselectedPsych;
+                if (preselectedPsych && Array.from(psychSelect.options).some(o => o.value === preselectedPsych)) {
+                    psychSelect.value = preselectedPsych;
+                }
                 document.getElementById('pat-fee').value = 180;
                 document.getElementById('pat-notes').value = '';
             }
