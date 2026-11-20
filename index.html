@@ -50,12 +50,17 @@
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: #ffffff !important; }
+            #app-content { padding: 0 !important; max-width: 100% !important; }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-sage-200 selection:text-sage-900">
 
     <!-- Toast Notification Container -->
-    <div id="toast-container" class="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+    <div id="toast-container" class="no-print fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <!-- ================= SCREEN 0: LOADING ================= -->
     <div id="screen-loading" class="min-h-screen flex flex-col items-center justify-center p-6 bg-slate-50">
@@ -69,7 +74,6 @@
     <!-- ================= SCREEN 1: AUTH (LOGIN / CADASTRO) ================= -->
     <div id="screen-auth" class="hidden min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-sage-50/40 to-slate-100">
         <div class="bg-white rounded-3xl shadow-xl border border-slate-200/80 max-w-md w-full overflow-hidden fade-in">
-            <!-- Header -->
             <div class="px-8 pt-8 pb-6 text-center bg-slate-50/70 border-b border-slate-100">
                 <div class="w-12 h-12 rounded-2xl bg-sage-600 text-white flex items-center justify-center mx-auto shadow-sm mb-3">
                     <i data-lucide="brain-circuit" class="w-6 h-6"></i>
@@ -78,7 +82,6 @@
                 <p class="text-xs text-slate-500 mt-1">Sistema Integrado de Gestão Clínica</p>
             </div>
 
-            <!-- Tabs: Entrar / Solicitar Acesso -->
             <div class="grid grid-cols-2 border-b border-slate-100 bg-slate-50/40 p-1.5 mx-6 mt-6 rounded-xl">
                 <button type="button" id="auth-tab-login" onclick="switchAuthMode('login')" class="py-2 text-xs font-semibold rounded-lg bg-white text-slate-900 shadow-2xs transition-all">
                     Entrar
@@ -88,7 +91,6 @@
                 </button>
             </div>
 
-            <!-- Form Login -->
             <form id="form-login" onsubmit="handleLogin(event)" class="p-6 sm:p-8 space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">E-mail *</label>
@@ -103,7 +105,6 @@
                 </button>
             </form>
 
-            <!-- Form Register -->
             <form id="form-register" onsubmit="handleRegister(event)" class="hidden p-6 sm:p-8 space-y-4">
                 <div class="bg-sky-50 border border-sky-200/80 rounded-xl p-3 text-xs text-sky-800">
                     <strong>Liberação Controlada:</strong> Após o cadastro, sua conta ficará com status <strong>Pendente</strong> até que o Administrador libere seu acesso como Psicólogo ou Atendimento.
@@ -156,8 +157,7 @@
     <div id="screen-app" class="hidden min-h-screen flex flex-col md:flex-row">
         
         <!-- Sidebar (Desktop) -->
-        <aside id="desktop-sidebar" class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-white border-r border-slate-200 z-30">
-            <!-- Brand Header -->
+        <aside id="desktop-sidebar" class="no-print hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-white border-r border-slate-200 z-30">
             <div class="flex items-center gap-3 px-6 h-16 border-b border-slate-100">
                 <div class="w-9 h-9 rounded-xl bg-sage-600 text-white flex items-center justify-center shadow-sm">
                     <i data-lucide="brain-circuit" class="w-5 h-5"></i>
@@ -168,16 +168,13 @@
                 </div>
             </div>
 
-            <!-- Logged User Info -->
             <div class="px-4 py-3 bg-slate-50/80 border-b border-slate-100">
                 <div class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Usuário Conectado</div>
                 <div id="sidebar-user-card" class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs"></div>
             </div>
 
-            <!-- Navigation Links -->
             <nav id="desktop-nav" class="flex-1 px-3 py-4 space-y-1 overflow-y-auto"></nav>
 
-            <!-- Footer Actions -->
             <div class="p-4 border-t border-slate-100 space-y-2">
                 <button onclick="syncAllDataFromSupabase(true)" class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium text-sage-700 bg-sage-50 hover:bg-sage-100 border border-sage-200 rounded-lg transition-colors">
                     <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
@@ -193,9 +190,7 @@
         <!-- Main Content Wrapper -->
         <div class="flex-1 md:pl-64 flex flex-col min-h-screen pb-16 md:pb-0">
             
-            <!-- Top Header Bar -->
-            <header class="sticky top-0 z-20 bg-white/95 backdrop-blur-xs border-b border-slate-200 px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
-                <!-- Mobile Brand -->
+            <header class="no-print sticky top-0 z-20 bg-white/95 backdrop-blur-xs border-b border-slate-200 px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-2.5 md:hidden">
                     <div class="w-8 h-8 rounded-lg bg-sage-600 text-white flex items-center justify-center">
                         <i data-lucide="brain-circuit" class="w-4 h-4"></i>
@@ -203,31 +198,25 @@
                     <span class="font-bold text-slate-900 text-base">PsiCare<span class="text-sage-600">Pro</span></span>
                 </div>
 
-                <!-- Page Title (Desktop) -->
                 <div class="hidden md:block">
                     <h1 id="header-page-title" class="text-lg font-semibold text-slate-800">Visão Geral</h1>
                 </div>
 
-                <!-- Right Controls -->
                 <div class="flex items-center gap-2.5 ml-auto">
-                    <!-- Pending Users Alert Badge (Visible ONLY to ADMIN if there are pending users) -->
                     <button id="admin-pending-alert-btn" onclick="switchTab('usuarios')" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition-colors animate-pulse">
                         <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
                         <span id="admin-pending-count-text">0 pendentes</span>
                     </button>
 
-                    <!-- Role Pill Badge -->
                     <div id="header-role-pill" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-sage-100 text-sage-800 border border-sage-200"></div>
 
-                    <!-- Mobile Logout Button -->
                     <button onclick="handleLogout()" class="md:hidden p-2 text-slate-500 hover:text-rose-600 rounded-lg" title="Sair">
                         <i data-lucide="log-out" class="w-4 h-4"></i>
                     </button>
                 </div>
             </header>
 
-            <!-- Assigned Psychologist Sub-banner for PSICOLOGO Role -->
-            <div id="psych-scope-banner" class="hidden bg-sage-700 text-white px-4 sm:px-6 py-2.5 text-xs sm:text-sm flex flex-wrap items-center justify-between gap-2">
+            <div id="psych-scope-banner" class="no-print hidden bg-sage-700 text-white px-4 sm:px-6 py-2.5 text-xs sm:text-sm flex flex-wrap items-center justify-between gap-2">
                 <div class="flex items-center gap-2">
                     <i data-lucide="shield" class="w-4 h-4 text-sage-200 shrink-0"></i>
                     <span id="psych-scope-text">Atendimento clínico focado nos seus pacientes:</span>
@@ -235,18 +224,16 @@
                 <div id="psych-scope-pills" class="flex flex-wrap gap-1.5"></div>
             </div>
 
-            <!-- Main View Container -->
             <main id="app-content" class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto fade-in"></main>
         </div>
 
-        <!-- Mobile Bottom Navigation -->
-        <nav id="mobile-nav" class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 z-30 flex justify-around items-center h-16 px-1"></nav>
+        <nav id="mobile-nav" class="no-print md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 z-30 flex justify-around items-center h-16 px-1"></nav>
     </div>
 
     <!-- ================= MODALS ================= -->
 
     <!-- Modal: Aprovar / Editar Permissões de Usuário (ADMIN) -->
-    <div id="modal-user-permission" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div id="modal-user-permission" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden border border-slate-100 fade-in">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
                 <h3 class="font-semibold text-slate-800 flex items-center gap-2">
@@ -291,7 +278,7 @@
     </div>
 
     <!-- Modal: Novo / Editar Agendamento -->
-    <div id="modal-appointment" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div id="modal-appointment" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden border border-slate-100 fade-in">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <h3 id="modal-appointment-title" class="font-semibold text-slate-800 flex items-center gap-2">
@@ -397,7 +384,7 @@
     </div>
 
     <!-- Modal: Relatório / Evolução Clínica da Sessão -->
-    <div id="modal-session-report" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div id="modal-session-report" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full overflow-hidden border border-slate-100 fade-in max-h-[90vh] flex flex-col">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-sage-50/70">
                 <div>
@@ -460,8 +447,8 @@
         </div>
     </div>
 
-    <!-- Modal: Histórico de Prontuário do Paciente -->
-    <div id="modal-patient-history" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <!-- Modal: Histórico de Prontuário & Dados Fiscais do Paciente -->
+    <div id="modal-patient-history" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-3xl w-full overflow-hidden border border-slate-100 fade-in max-h-[90vh] flex flex-col">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                 <div>
@@ -477,7 +464,7 @@
     </div>
 
     <!-- Modal: Cadastro / Edição de Psicólogo (ADMIN) -->
-    <div id="modal-psychologist" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div id="modal-psychologist" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden border border-slate-100 fade-in">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <h3 id="modal-psych-title" class="font-semibold text-slate-800">Cadastrar Psicólogo(a)</h3>
@@ -533,51 +520,110 @@
         </div>
     </div>
 
-    <!-- Modal: Cadastro / Edição de Paciente -->
-    <div id="modal-patient" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden border border-slate-100 fade-in">
+    <!-- Modal: Cadastro / Edição de Paciente (Com Dados Fiscais para NFS-e) -->
+    <div id="modal-patient" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full overflow-hidden border border-slate-100 fade-in max-h-[92vh] flex flex-col">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                <h3 id="modal-patient-title" class="font-semibold text-slate-800">Cadastrar Paciente</h3>
+                <h3 id="modal-patient-title" class="font-semibold text-slate-800 flex items-center gap-2">
+                    <i data-lucide="user-plus" class="w-5 h-5 text-sage-600"></i>
+                    <span>Cadastrar Paciente</span>
+                </h3>
                 <button onclick="closeModal('modal-patient')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-            <form id="form-patient" onsubmit="savePatient(event)" class="p-6 space-y-4">
+            <form id="form-patient" onsubmit="savePatient(event)" class="p-6 space-y-5 overflow-y-auto flex-1">
                 <input type="hidden" id="pat-id">
                 <input type="hidden" id="pat-from-apt" value="false">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo do Paciente *</label>
-                    <input type="text" id="pat-name" required placeholder="Ex: Lucas Mendes Ferreira" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                <!-- Identificação & Atendimento -->
+                <div class="space-y-4">
+                    <div class="text-xs font-bold uppercase tracking-wider text-sage-700">1. Identificação & Acompanhamento</div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Telefone / WhatsApp *</label>
-                        <input type="text" id="pat-phone" required placeholder="Ex: (85) 99812-3456" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo do Paciente / Tomador da Nota *</label>
+                        <input type="text" id="pat-name" required placeholder="Ex: Lucas Mendes Ferreira" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">CPF</label>
-                        <input type="text" id="pat-cpf" placeholder="000.000.000-00" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Psicólogo Responsável *</label>
-                        <div class="flex gap-1.5">
-                            <select id="pat-psychologist" required class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white"></select>
-                            <button type="button" onclick="openPsychologistModal(null, true)" title="Cadastrar Novo Psicólogo" class="px-3 py-2 bg-sage-50 text-sage-700 hover:bg-sage-100 border border-sage-200 rounded-xl shrink-0">
-                                <i data-lucide="user-plus" class="w-4 h-4"></i>
-                            </button>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Telefone / WhatsApp *</label>
+                            <input type="text" id="pat-phone" required placeholder="(85) 99812-3456" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">CPF (Nota Fiscal) *</label>
+                            <input type="text" id="pat-cpf" required placeholder="000.000.000-00" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">E-mail (Envio NFS-e) *</label>
+                            <input type="email" id="pat-email" required placeholder="paciente@email.com" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Valor Acordado / Sessão (R$) *</label>
-                        <input type="number" step="0.01" id="pat-fee" required value="180" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Psicólogo Responsável *</label>
+                            <div class="flex gap-1.5">
+                                <select id="pat-psychologist" required class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white"></select>
+                                <button type="button" onclick="openPsychologistModal(null, true)" title="Cadastrar Novo Psicólogo" class="px-3 py-2 bg-sage-50 text-sage-700 hover:bg-sage-100 border border-sage-200 rounded-xl shrink-0">
+                                    <i data-lucide="user-plus" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Valor Acordado / Sessão (R$) *</label>
+                            <input type="number" step="0.01" id="pat-fee" required value="180" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        </div>
                     </div>
                 </div>
-                <div>
+
+                <!-- Endereço Fiscal para Nota Fiscal -->
+                <div class="space-y-4 pt-3 border-t border-slate-100">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-sage-700">2. Endereço Completo para Nota Fiscal (NFS-e)</span>
+                        <span class="text-[11px] text-slate-400">Obrigatório para emissão fiscal</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">CEP *</label>
+                            <input type="text" id="pat-cep" required onblur="lookupCepForPatient(this.value)" placeholder="60000-000" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Logradouro / Rua *</label>
+                            <input type="text" id="pat-street" required placeholder="Ex: Av. Dom Luís" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Número *</label>
+                            <input type="text" id="pat-number" required placeholder="1234" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        </div>
+                        <div class="sm:col-span-3">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Complemento</label>
+                            <input type="text" id="pat-complement" placeholder="Ex: Apto 802, Bloco B, Sala 304..." class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Bairro *</label>
+                            <input type="text" id="pat-neighborhood" required placeholder="Ex: Meireles" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Cidade / Município *</label>
+                            <input type="text" id="pat-city" required placeholder="Ex: Fortaleza" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">UF *</label>
+                            <input type="text" id="pat-state" required maxlength="2" placeholder="CE" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm uppercase focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100">
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Observações Gerais</label>
                     <textarea id="pat-notes" rows="2" placeholder="Preferência de horário, contato de emergência..." class="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500"></textarea>
                 </div>
+
                 <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
                     <button type="button" onclick="closeModal('modal-patient')" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
                     <button type="submit" class="px-5 py-2 text-sm font-semibold text-white bg-sage-600 hover:bg-sage-700 rounded-xl">Salvar Paciente</button>
@@ -587,7 +633,7 @@
     </div>
 
     <!-- Modal: Baixa Rápida de Pagamento -->
-    <div id="modal-payment" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div id="modal-payment" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden border border-slate-100 fade-in">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-emerald-50/60">
                 <h3 class="font-semibold text-slate-800 flex items-center gap-2">
@@ -645,6 +691,17 @@
             return d.toISOString().split('T')[0];
         }
 
+        function getMonthStartStr(dateStr = getOffsetDateStr(0)) {
+            const [y, m] = dateStr.split('-');
+            return `${y}-${m}-01`;
+        }
+
+        function getMonthEndStr(dateStr = getOffsetDateStr(0)) {
+            const [y, m] = dateStr.split('-').map(Number);
+            const lastDay = new Date(y, m, 0).getDate();
+            return `${y}-${String(m).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+        }
+
         const TODAY_STR = getOffsetDateStr(0);
         const TOMORROW_STR = getOffsetDateStr(1);
 
@@ -660,9 +717,17 @@
         };
 
         let selectedAgendaDate = TODAY_STR;
+        let selectedCalendarMonth = TODAY_STR.slice(0, 7); // 'YYYY-MM'
         let selectedAgendaPsychFilter = 'ALL';
+
         let financeFilterStatus = 'ALL';
         let financeFilterPsych = 'ALL';
+        let financeDateStart = getMonthStartStr(TODAY_STR);
+        let financeDateEnd = getMonthEndStr(TODAY_STR);
+
+        let psychReportDateStart = getMonthStartStr(TODAY_STR);
+        let psychReportDateEnd = getMonthEndStr(TODAY_STR);
+        let psychReportStatusFilter = 'ALL'; // 'ALL' | 'Pago' | 'Pendente'
 
         /**
          * ============================================================================
@@ -832,6 +897,14 @@
                     name: p.name,
                     phone: p.phone,
                     cpf: p.cpf || '',
+                    email: p.email || '',
+                    zipCode: p.zip_code || '',
+                    street: p.street || '',
+                    streetNumber: p.street_number || '',
+                    complement: p.complement || '',
+                    neighborhood: p.neighborhood || '',
+                    city: p.city || '',
+                    state: p.state || '',
                     psychologistId: p.psychologist_id,
                     sessionFee: Number(p.session_fee || 0),
                     notes: p.notes || ''
@@ -888,6 +961,25 @@
             return `${d}/${m}/${y}${label}`;
         }
 
+        function formatMonthTitleBR(ymStr) {
+            const [y, m] = ymStr.split('-').map(Number);
+            const dt = new Date(y, m - 1, 1);
+            const raw = dt.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+            return raw.charAt(0).toUpperCase() + raw.slice(1);
+        }
+
+        function formatFullAddress(pat) {
+            const parts = [];
+            if (pat.street) {
+                parts.push(pat.streetNumber ? `${pat.street}, ${pat.streetNumber}` : pat.street);
+            }
+            if (pat.complement) parts.push(pat.complement);
+            if (pat.neighborhood) parts.push(pat.neighborhood);
+            if (pat.city) parts.push(pat.state ? `${pat.city}/${pat.state.toUpperCase()}` : pat.city);
+            if (pat.zipCode) parts.push(`CEP ${pat.zipCode}`);
+            return parts.length ? parts.join(' — ') : 'Endereço não informado';
+        }
+
         function getPsychById(id) {
             return db.psychologists.find(p => p.id === id) || { name: 'Não definido', sharePercent: 70, color: 'emerald' };
         }
@@ -896,10 +988,6 @@
             return db.patients.find(p => p.id === id) || { name: 'Paciente Removido', phone: '', sessionFee: 0 };
         }
 
-        /**
-         * ADMIN e ATENDIMENTO acessam todos os profissionais da grade/clínica.
-         * PSICOLOGO acessa EXCLUSIVAMENTE a sua própria ficha profissional (não acompanha outros psicólogos).
-         */
         function getAccessiblePsychIds() {
             const role = currentUserProfile?.role;
             if (role === 'ADMIN' || role === 'ATENDIMENTO') {
@@ -968,6 +1056,31 @@
             }, 3400);
         }
 
+        async function lookupCepForPatient(rawCep) {
+            const digits = (rawCep || '').replace(/\D/g, '');
+            if (digits.length !== 8) return;
+            try {
+                const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
+                const data = await res.json();
+                if (!data.erro) {
+                    if (data.logradouro && !document.getElementById('pat-street').value) {
+                        document.getElementById('pat-street').value = data.logradouro;
+                    }
+                    if (data.bairro && !document.getElementById('pat-neighborhood').value) {
+                        document.getElementById('pat-neighborhood').value = data.bairro;
+                    }
+                    if (data.localidade && !document.getElementById('pat-city').value) {
+                        document.getElementById('pat-city').value = data.localidade;
+                    }
+                    if (data.uf && !document.getElementById('pat-state').value) {
+                        document.getElementById('pat-state').value = data.uf;
+                    }
+                }
+            } catch (_) {
+                // Silencioso se o usuário preencher manualmente
+            }
+        }
+
         /**
          * ============================================================================
          * NAVEGAÇÃO POR PERFIL REAL (ADMIN / PSICOLOGO / ATENDIMENTO)
@@ -978,8 +1091,8 @@
                 { id: 'dashboard', label: 'Dashboard Geral', icon: 'layout-dashboard' },
                 { id: 'usuarios', label: 'Aprovar Acessos', icon: 'user-check' },
                 { id: 'agenda', label: 'Agenda Global', icon: 'calendar-days' },
-                { id: 'financeiro', label: 'Financeiro & Repasses', icon: 'wallet' },
-                { id: 'pacientes', label: 'Pacientes', icon: 'users' },
+                { id: 'financeiro', label: 'Financeiro & Relatórios', icon: 'wallet' },
+                { id: 'pacientes', label: 'Pacientes (NFS-e)', icon: 'users' },
                 { id: 'psicologos', label: 'Psicólogos', icon: 'stethoscope' }
             ],
             PSICOLOGO: [
@@ -990,7 +1103,7 @@
             ATENDIMENTO: [
                 { id: 'reception-grid', label: 'Grade de Horários', icon: 'calendar-range' },
                 { id: 'reception-today', label: 'Recepção & Check-in', icon: 'clipboard-check' },
-                { id: 'reception-patients', label: 'Cadastro de Pacientes', icon: 'user-plus' }
+                { id: 'reception-patients', label: 'Pacientes (NFS-e)', icon: 'user-plus' }
             ]
         };
 
@@ -1039,7 +1152,7 @@
                 const assignedList = getAccessiblePsychIds().map(id => getPsychById(id));
                 const myPatientsCount = db.patients.filter(p => getAccessiblePsychIds().includes(p.psychologistId)).length;
                 psychScopeBanner.classList.remove('hidden');
-                document.getElementById('psych-scope-text').innerHTML = `Espaço clínico individual • <strong>${myPatientsCount}</strong> paciente(s) sob seu acompanhamento:`;
+                document.getElementById('psych-scope-text').innerHTML = `Espaço clínico individual • <strong>${myPatientsCount}</strong> paciente(s) vinculado(s) a você:`;
                 document.getElementById('psych-scope-pills').innerHTML = assignedList.length
                     ? assignedList.map(p => `<span class="bg-sage-800/80 border border-sage-500/50 px-2.5 py-0.5 rounded-full text-xs font-medium">${p.name}</span>`).join('')
                     : `<span class="bg-rose-600 px-2.5 py-0.5 rounded-full text-xs">Aguardando o Admin vincular seu perfil</span>`;
@@ -1352,7 +1465,7 @@
 
         /**
          * ============================================================================
-         * 1. ADMIN VIEWS (DASHBOARD, FINANCEIRO, PSICÓLOGOS)
+         * 1. ADMIN VIEWS (DASHBOARD, FINANCEIRO & RELATÓRIOS, PSICÓLOGOS)
          * ============================================================================
          */
         function calculateFinancialMetrics(appointmentsList) {
@@ -1360,6 +1473,7 @@
             let paidTotal = 0;
             let pendingTotal = 0;
             let psychPayoutPaid = 0;
+            let psychPayoutPending = 0;
             let psychPayoutTotal = 0;
 
             appointmentsList.forEach(apt => {
@@ -1367,15 +1481,17 @@
                 const val = Number(apt.value || 0);
                 const psych = getPsychById(apt.psychologistId);
                 const shareRate = (psych.sharePercent || 70) / 100;
+                const payout = val * shareRate;
 
                 grossTotal += val;
-                psychPayoutTotal += val * shareRate;
+                psychPayoutTotal += payout;
 
                 if (apt.paymentStatus === 'Pago') {
                     paidTotal += val;
-                    psychPayoutPaid += val * shareRate;
+                    psychPayoutPaid += payout;
                 } else {
                     pendingTotal += val;
+                    psychPayoutPending += payout;
                 }
             });
 
@@ -1384,6 +1500,7 @@
                 paidTotal,
                 pendingTotal,
                 psychPayoutPaid,
+                psychPayoutPending,
                 psychPayoutTotal,
                 clinicNetPaid: paidTotal - psychPayoutPaid,
                 clinicNetProjected: grossTotal - psychPayoutTotal
@@ -1568,8 +1685,30 @@
             `;
         }
 
+        function exportCsvReport(rows, filename) {
+            if (!rows.length) {
+                showToast('Não há dados no período selecionado para exportar.', 'info');
+                return;
+            }
+            const headers = Object.keys(rows[0]);
+            const csvLines = [
+                headers.join(';'),
+                ...rows.map(r => headers.map(h => `"${String(r[h] ?? '').replace(/"/g, '""')}"`).join(';'))
+            ];
+            const blob = new Blob(['\uFEFF' + csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Relatório CSV gerado com sucesso!', 'success');
+        }
+
         function renderAdminFinance() {
             const filtered = db.appointments.filter(apt => {
+                if (financeDateStart && apt.date < financeDateStart) return false;
+                if (financeDateEnd && apt.date > financeDateEnd) return false;
                 if (financeFilterStatus !== 'ALL' && apt.paymentStatus !== financeFilterStatus) return false;
                 if (financeFilterPsych !== 'ALL' && apt.psychologistId !== financeFilterPsych) return false;
                 return true;
@@ -1577,51 +1716,88 @@
 
             const metrics = calculateFinancialMetrics(filtered);
 
+            const csvRows = filtered.map(apt => {
+                const pat = getPatientById(apt.patientId);
+                const psy = getPsychById(apt.psychologistId);
+                const shareVal = Number(apt.value || 0) * ((psy.sharePercent || 70) / 100);
+                return {
+                    Data: formatDateBR(apt.date),
+                    Hora: apt.time,
+                    Paciente: pat.name,
+                    Psicologo: psy.name,
+                    Status_Sessao: apt.status,
+                    Valor_Bruto: Number(apt.value || 0).toFixed(2).replace('.', ','),
+                    Repasse_Psicologo: shareVal.toFixed(2).replace('.', ','),
+                    Status_Pagamento: apt.paymentStatus,
+                    Forma_Pagamento: apt.paymentMethod || ''
+                };
+            });
+
             return `
                 <div class="space-y-6">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <h2 class="text-xl font-bold text-slate-900">Controle Financeiro & Repasses</h2>
-                            <p class="text-sm text-slate-500">Gerencie recebimentos de pacientes, formas de pagamento e comissões.</p>
+                            <h2 class="text-xl font-bold text-slate-900">Financeiro & Relatórios por Período</h2>
+                            <p class="text-sm text-slate-500">Filtre por data inicial e final para acompanhar recebimentos, pendências e repasses.</p>
                         </div>
-                        <button onclick="openAppointmentModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-sage-600 hover:bg-sage-700 text-white text-sm font-semibold rounded-xl shadow-xs">
-                            <i data-lucide="plus" class="w-4 h-4"></i>
-                            <span>Lançar Sessão</span>
-                        </button>
+                        <div class="no-print flex flex-wrap gap-2">
+                            <button onclick='exportCsvReport(${JSON.stringify(csvRows)}, "relatorio-financeiro-${financeDateStart}-a-${financeDateEnd}.csv")' class="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold rounded-xl">
+                                <i data-lucide="download" class="w-4 h-4 text-sage-600"></i>
+                                <span>Exportar CSV</span>
+                            </button>
+                            <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold rounded-xl">
+                                <i data-lucide="printer" class="w-4 h-4 text-slate-600"></i>
+                                <span>Imprimir / PDF</span>
+                            </button>
+                            <button onclick="openAppointmentModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold rounded-xl shadow-xs">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                <span>Lançar Sessão</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div class="flex flex-wrap items-center gap-3">
-                            <div>
-                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Status Pagamento</label>
-                                <select onchange="financeFilterStatus = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white">
-                                    <option value="ALL" ${financeFilterStatus === 'ALL' ? 'selected' : ''}>Todos os Status</option>
-                                    <option value="Pago" ${financeFilterStatus === 'Pago' ? 'selected' : ''}>Somente Pagos</option>
-                                    <option value="Pendente" ${financeFilterStatus === 'Pendente' ? 'selected' : ''}>Somente Pendentes</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Psicólogo(a)</label>
-                                <select onchange="financeFilterPsych = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white">
-                                    <option value="ALL" ${financeFilterPsych === 'ALL' ? 'selected' : ''}>Todos os Profissionais</option>
-                                    ${db.psychologists.map(p => `<option value="${p.id}" ${financeFilterPsych === p.id ? 'selected' : ''}>${p.name}</option>`).join('')}
-                                </select>
-                            </div>
+                    <!-- Resumo do Período -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-2xl border border-emerald-200 bg-emerald-50/30">
+                            <div class="text-xs font-semibold uppercase text-emerald-700">Total Recebido no Período</div>
+                            <div class="text-2xl font-bold text-emerald-800 mt-1">${formatCurrency(metrics.paidTotal)}</div>
+                            <div class="text-xs text-slate-500 mt-0.5">Repasse pago aos psicólogos: ${formatCurrency(metrics.psychPayoutPaid)}</div>
                         </div>
+                        <div class="bg-white p-4 rounded-2xl border border-amber-200 bg-amber-50/30">
+                            <div class="text-xs font-semibold uppercase text-amber-700">Falta Receber (Pendente)</div>
+                            <div class="text-2xl font-bold text-amber-800 mt-1">${formatCurrency(metrics.pendingTotal)}</div>
+                            <div class="text-xs text-slate-500 mt-0.5">Repasse pendente aos psicólogos: ${formatCurrency(metrics.psychPayoutPending)}</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200">
+                            <div class="text-xs font-semibold uppercase text-slate-500">Faturamento Bruto do Período</div>
+                            <div class="text-2xl font-bold text-slate-900 mt-1">${formatCurrency(metrics.grossTotal)}</div>
+                            <div class="text-xs text-sky-700 font-medium mt-0.5">Repasse total previsto: ${formatCurrency(metrics.psychPayoutTotal)}</div>
+                        </div>
+                    </div>
 
-                        <div class="flex flex-wrap gap-4 bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-200/60">
-                            <div>
-                                <div class="text-[11px] text-slate-500">Total Filtrado</div>
-                                <div class="font-bold text-slate-800 text-sm">${formatCurrency(metrics.grossTotal)}</div>
-                            </div>
-                            <div class="border-l border-slate-200 pl-4">
-                                <div class="text-[11px] text-emerald-600">Recebido</div>
-                                <div class="font-bold text-emerald-700 text-sm">${formatCurrency(metrics.paidTotal)}</div>
-                            </div>
-                            <div class="border-l border-slate-200 pl-4">
-                                <div class="text-[11px] text-sky-600">Repasse Psicólogos</div>
-                                <div class="font-bold text-sky-700 text-sm">${formatCurrency(metrics.psychPayoutTotal)}</div>
-                            </div>
+                    <div class="no-print bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-wrap items-end gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Data Inicial</label>
+                            <input type="date" value="${financeDateStart}" onchange="financeDateStart = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Data Final</label>
+                            <input type="date" value="${financeDateEnd}" onchange="financeDateEnd = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Status Pagamento</label>
+                            <select onchange="financeFilterStatus = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white">
+                                <option value="ALL" ${financeFilterStatus === 'ALL' ? 'selected' : ''}>Todos os Status</option>
+                                <option value="Pago" ${financeFilterStatus === 'Pago' ? 'selected' : ''}>Somente Pagos</option>
+                                <option value="Pendente" ${financeFilterStatus === 'Pendente' ? 'selected' : ''}>Somente Pendentes</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Psicólogo(a)</label>
+                            <select onchange="financeFilterPsych = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white">
+                                <option value="ALL" ${financeFilterPsych === 'ALL' ? 'selected' : ''}>Todos os Profissionais</option>
+                                ${db.psychologists.map(p => `<option value="${p.id}" ${financeFilterPsych === p.id ? 'selected' : ''}>${p.name}</option>`).join('')}
+                            </select>
                         </div>
                     </div>
 
@@ -1636,12 +1812,12 @@
                                         <th class="py-3.5 px-3 text-right">Valor Bruto</th>
                                         <th class="py-3.5 px-3 text-right">Repasse Psic.</th>
                                         <th class="py-3.5 px-4">Pagamento</th>
-                                        <th class="py-3.5 px-4 text-right">Ações</th>
+                                        <th class="no-print py-3.5 px-4 text-right">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100 text-sm">
                                     ${filtered.length === 0 ? `
-                                        <tr><td colspan="7" class="py-8 text-center text-slate-400">Nenhum lançamento encontrado.</td></tr>
+                                        <tr><td colspan="7" class="py-8 text-center text-slate-400">Nenhum lançamento encontrado no período selecionado.</td></tr>
                                     ` : filtered.map(apt => {
                                         const pat = getPatientById(apt.patientId);
                                         const psy = getPsychById(apt.psychologistId);
@@ -1660,7 +1836,7 @@
                                                 <td class="py-3.5 px-3 text-right font-semibold text-slate-800">${formatCurrency(apt.value)}</td>
                                                 <td class="py-3.5 px-3 text-right font-medium text-sky-700">${formatCurrency(shareVal)}</td>
                                                 <td class="py-3.5 px-4">${getPaymentBadge(apt.paymentStatus, apt.paymentMethod)}</td>
-                                                <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                                                <td class="no-print py-3.5 px-4 text-right whitespace-nowrap">
                                                     <div class="inline-flex items-center gap-1.5">
                                                         ${apt.paymentStatus === 'Pendente' && apt.status !== 'Cancelada' ? `
                                                             <button onclick="openPaymentModal('${apt.id}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg">
@@ -1744,45 +1920,140 @@
             `;
         }
 
+        /**
+         * ============================================================================
+         * AGENDA COM CALENDÁRIO MENSAL COMPLETO + CONTADOR NA QUINA DE CADA DIA
+         * ============================================================================
+         */
+        function shiftCalendarMonth(deltaMonths) {
+            const [y, m] = selectedCalendarMonth.split('-').map(Number);
+            const dt = new Date(y, m - 1 + deltaMonths, 1);
+            const ny = dt.getFullYear();
+            const nm = String(dt.getMonth() + 1).padStart(2, '0');
+            selectedCalendarMonth = `${ny}-${nm}`;
+            selectedAgendaDate = `${ny}-${nm}-01`;
+            renderApp();
+        }
+
+        function selectCalendarDay(dateStr) {
+            selectedAgendaDate = dateStr;
+            selectedCalendarMonth = dateStr.slice(0, 7);
+            renderApp();
+        }
+
+        function renderMonthCalendarHtml(scopedAppointments) {
+            const [year, month] = selectedCalendarMonth.split('-').map(Number);
+            const firstDayOfWeek = new Date(year, month - 1, 1).getDay(); // 0 = Dom
+            const daysInMonth = new Date(year, month, 0).getDate();
+            const monthPrefix = `${year}-${String(month).padStart(2, '0')}`;
+
+            // Conta atendimentos (não cancelados) por data dentro do escopo permitido
+            const countByDate = {};
+            scopedAppointments.forEach(apt => {
+                if (apt.status === 'Cancelada') return;
+                if (apt.date && apt.date.startsWith(monthPrefix)) {
+                    countByDate[apt.date] = (countByDate[apt.date] || 0) + 1;
+                }
+            });
+
+            const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            const cells = [];
+
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                cells.push(`<div class="h-16 sm:h-20 rounded-xl bg-slate-50/50 border border-slate-100"></div>`);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${monthPrefix}-${String(day).padStart(2, '0')}`;
+                const count = countByDate[dateStr] || 0;
+                const isSelected = dateStr === selectedAgendaDate;
+                const isToday = dateStr === TODAY_STR;
+
+                cells.push(`
+                    <button type="button" onclick="selectCalendarDay('${dateStr}')" class="relative h-16 sm:h-20 p-2 rounded-xl border text-left flex flex-col justify-between transition-all ${
+                        isSelected
+                            ? 'bg-sage-600 text-white border-sage-700 shadow-xs'
+                            : isToday
+                                ? 'bg-sage-50/90 text-slate-900 border-sage-300 hover:bg-sage-100/70'
+                                : 'bg-white text-slate-700 border-slate-200/80 hover:border-sage-300 hover:bg-slate-50'
+                    }">
+                        <div class="flex items-center justify-between w-full">
+                            <span class="text-xs sm:text-sm font-bold ${isSelected ? 'text-white' : (isToday ? 'text-sage-800' : 'text-slate-800')}">${day}</span>
+                            ${isToday && !isSelected ? `<span class="text-[9px] font-bold uppercase px-1.5 py-0.2 rounded bg-sage-200 text-sage-900">Hoje</span>` : ''}
+                        </div>
+
+                        <!-- Contador na quina inferior direita -->
+                        <div class="self-end">
+                            ${count > 0 ? `
+                                <span class="inline-flex items-center justify-center min-w-[22px] h-5 px-1.5 rounded-full text-[11px] font-extrabold ${
+                                    isSelected
+                                        ? 'bg-white text-sage-800 shadow-2xs'
+                                        : 'bg-sage-600 text-white shadow-2xs'
+                                }" title="${count} atendimento(s) neste dia">
+                                    ${count}
+                                </span>
+                            ` : `
+                                <span class="text-[10px] ${isSelected ? 'text-sage-200' : 'text-slate-300'}">—</span>
+                            `}
+                        </div>
+                    </button>
+                `);
+            }
+
+            return `
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 sm:p-5 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="shiftCalendarMonth(-1)" class="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600">
+                                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                            </button>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 min-w-[170px] text-center">
+                                ${formatMonthTitleBR(selectedCalendarMonth)}
+                            </h3>
+                            <button type="button" onclick="shiftCalendarMonth(1)" class="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600">
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="selectCalendarDay('${TODAY_STR}')" class="px-3 py-1.5 text-xs font-semibold bg-sage-50 text-sage-700 hover:bg-sage-100 rounded-xl border border-sage-200">
+                                Ir para Hoje
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-7 gap-1.5 sm:gap-2 text-center">
+                        ${weekDays.map(w => `<div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 py-1">${w}</div>`).join('')}
+                    </div>
+
+                    <div class="grid grid-cols-7 gap-1.5 sm:gap-2">
+                        ${cells.join('')}
+                    </div>
+                </div>
+            `;
+        }
+
         function renderGlobalAgenda(isAdmin = true) {
             const accessibleIds = getAccessiblePsychIds();
-            const filteredApts = db.appointments.filter(apt => {
+            const scopedAppointments = db.appointments.filter(apt => {
                 if (!accessibleIds.includes(apt.psychologistId)) return false;
-                if (selectedAgendaDate && apt.date !== selectedAgendaDate) return false;
                 if (isAdmin && selectedAgendaPsychFilter !== 'ALL' && apt.psychologistId !== selectedAgendaPsychFilter) return false;
                 return true;
-            }).sort((a, b) => a.time.localeCompare(b.time));
+            });
+
+            const dayApts = scopedAppointments
+                .filter(apt => apt.date === selectedAgendaDate)
+                .sort((a, b) => a.time.localeCompare(b.time));
 
             return `
                 <div class="space-y-6">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <h2 class="text-xl font-bold text-slate-900">${isAdmin ? 'Agenda Global da Clínica' : 'Minha Agenda de Atendimentos'}</h2>
-                            <p class="text-sm text-slate-500">${isAdmin ? 'Visualize horários, status de comparecimento e realize evoluções clínicas.' : 'Seus atendimentos agendados com seus pacientes.'}</p>
+                            <h2 class="text-xl font-bold text-slate-900">${isAdmin ? 'Agenda Mensal da Clínica' : 'Minha Agenda Mensal'}</h2>
+                            <p class="text-sm text-slate-500">${isAdmin ? 'Clique em qualquer dia do calendário para ver ou agendar sessões.' : 'Calendário mensal com a quantidade de atendimentos dos seus pacientes por dia.'}</p>
                         </div>
-                        <button onclick="openAppointmentModal(null, '${selectedAgendaDate}')" class="inline-flex items-center gap-2 px-4 py-2.5 bg-sage-600 hover:bg-sage-700 text-white text-sm font-semibold rounded-xl shadow-xs">
-                            <i data-lucide="calendar-plus" class="w-4 h-4"></i>
-                            <span>Agendar Horário</span>
-                        </button>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-wrap items-center justify-between gap-4">
-                        <div class="flex flex-wrap items-center gap-3">
-                            <div class="flex items-center gap-1.5">
-                                <button onclick="shiftAgendaDate(-1)" class="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600">
-                                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
-                                </button>
-                                <input type="date" value="${selectedAgendaDate}" onchange="selectedAgendaDate = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium">
-                                <button onclick="shiftAgendaDate(1)" class="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600">
-                                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                                </button>
-                                <button onclick="selectedAgendaDate = TODAY_STR; renderApp()" class="px-3 py-2 text-xs font-semibold bg-sage-50 text-sage-700 hover:bg-sage-100 rounded-xl border border-sage-200">
-                                    Hoje
-                                </button>
-                            </div>
-
+                        <div class="flex flex-wrap items-center gap-2">
                             ${isAdmin && accessibleIds.length > 1 ? `
-                                <select onchange="selectedAgendaPsychFilter = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white">
+                                <select onchange="selectedAgendaPsychFilter = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm bg-white">
                                     <option value="ALL" ${selectedAgendaPsychFilter === 'ALL' ? 'selected' : ''}>Todos os Psicólogos</option>
                                     ${accessibleIds.map(id => {
                                         const p = getPsychById(id);
@@ -1790,21 +2061,32 @@
                                     }).join('')}
                                 </select>
                             ` : ''}
-                        </div>
-
-                        <div class="text-xs font-medium text-slate-500">
-                            Exibindo <strong class="text-slate-800">${filteredApts.length}</strong> atendimento(s) em <strong>${formatDateBR(selectedAgendaDate)}</strong>
+                            <button onclick="openAppointmentModal(null, '${selectedAgendaDate}')" class="inline-flex items-center gap-2 px-4 py-2.5 bg-sage-600 hover:bg-sage-700 text-white text-sm font-semibold rounded-xl shadow-xs">
+                                <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                                <span>Agendar em ${formatDateBR(selectedAgendaDate).split(' ')[0]}</span>
+                            </button>
                         </div>
                     </div>
 
+                    ${renderMonthCalendarHtml(scopedAppointments)}
+
+                    <div class="flex items-center justify-between pt-1">
+                        <h3 class="text-base font-bold text-slate-800">
+                            Atendimentos do dia ${formatDateBR(selectedAgendaDate)}
+                        </h3>
+                        <span class="text-xs font-semibold bg-sage-100 text-sage-800 px-3 py-1 rounded-full">
+                            ${dayApts.length} atendimento(s)
+                        </span>
+                    </div>
+
                     <div class="space-y-3">
-                        ${filteredApts.length === 0 ? `
-                            <div class="bg-white rounded-2xl border border-slate-200/80 p-10 text-center">
-                                <h3 class="font-semibold text-slate-700">Nenhum atendimento nesta data</h3>
-                                <p class="text-xs text-slate-400 mt-1 mb-4">Selecione outra data acima ou agende um novo horário.</p>
-                                <button onclick="openAppointmentModal(null, '${selectedAgendaDate}')" class="px-4 py-2 bg-sage-600 text-white text-xs font-semibold rounded-xl">Agendar Agora</button>
+                        ${dayApts.length === 0 ? `
+                            <div class="bg-white rounded-2xl border border-slate-200/80 p-8 text-center">
+                                <h4 class="font-semibold text-slate-700">Nenhum atendimento neste dia</h4>
+                                <p class="text-xs text-slate-400 mt-1 mb-4">Selecione outro dia no calendário acima ou agende um horário.</p>
+                                <button onclick="openAppointmentModal(null, '${selectedAgendaDate}')" class="px-4 py-2 bg-sage-600 text-white text-xs font-semibold rounded-xl">Agendar Horário</button>
                             </div>
-                        ` : filteredApts.map(apt => {
+                        ` : dayApts.map(apt => {
                             const pat = getPatientById(apt.patientId);
                             const psy = getPsychById(apt.psychologistId);
                             const c = getColorClasses(psy.color);
@@ -1821,11 +2103,11 @@
                                             <div class="flex flex-wrap items-center gap-2">
                                                 <h4 class="font-bold text-slate-900 text-base">${pat.name}</h4>
                                                 ${getStatusBadge(apt.status)}
-                                                ${getPaymentBadge(apt.paymentStatus, apt.paymentMethod)}
+                                                ${isAdmin ? getPaymentBadge(apt.paymentStatus, apt.paymentMethod) : ''}
                                             </div>
                                             <div class="text-xs text-slate-500 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
                                                 ${isAdmin ? `<span class="font-medium text-slate-700">${psy.name}</span><span>•</span>` : ''}
-                                                <span>Valor: <strong>${formatCurrency(apt.value)}</strong></span>
+                                                ${isAdmin ? `<span>Valor: <strong>${formatCurrency(apt.value)}</strong></span>` : `<span>${pat.phone || ''}</span>`}
                                                 ${apt.notes ? `<span>• <em class="text-slate-400">${apt.notes}</em></span>` : ''}
                                             </div>
                                         </div>
@@ -1857,81 +2139,125 @@
             `;
         }
 
-        function shiftAgendaDate(days) {
-            const d = new Date(selectedAgendaDate + 'T12:00:00');
-            d.setDate(d.getDate() + days);
-            selectedAgendaDate = d.toISOString().split('T')[0];
-            renderApp();
-        }
-
         /**
          * ============================================================================
-         * 2. PSICÓLOGO VIEWS (FOCO NOS SEUS PACIENTES, AGENDA E REPASSES)
+         * 2. PSICÓLOGO VIEWS (REPASSES SEM PREÇO DA SESSÃO + RELATÓRIO POR PERÍODO)
          * ============================================================================
          */
         function renderPsychologistFinance() {
             const assignedIds = getAccessiblePsychIds();
-            const myAppointments = db.appointments.filter(a => assignedIds.includes(a.psychologistId) && a.status !== 'Cancelada');
+            const myAppointments = db.appointments.filter(a => {
+                if (!assignedIds.includes(a.psychologistId)) return false;
+                if (a.status === 'Cancelada' || a.paymentStatus === 'Isento') return false;
+                if (psychReportDateStart && a.date < psychReportDateStart) return false;
+                if (psychReportDateEnd && a.date > psychReportDateEnd) return false;
+                return true;
+            });
 
-            let totalReceivablePaid = 0;
-            let totalReceivablePending = 0;
-            let totalGrossGenerated = 0;
+            let receivedPayout = 0;
+            let pendingPayout = 0;
 
             myAppointments.forEach(apt => {
                 const psy = getPsychById(apt.psychologistId);
-                const val = Number(apt.value || 0);
-                const myCut = val * ((psy.sharePercent || 70) / 100);
-                totalGrossGenerated += val;
-
+                const myCut = Number(apt.value || 0) * ((psy.sharePercent || 70) / 100);
                 if (apt.paymentStatus === 'Pago') {
-                    totalReceivablePaid += myCut;
+                    receivedPayout += myCut;
                 } else {
-                    totalReceivablePending += myCut;
+                    pendingPayout += myCut;
                 }
             });
 
-            const sortedApts = [...myAppointments].sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+            const tableRows = myAppointments
+                .filter(apt => psychReportStatusFilter === 'ALL' || apt.paymentStatus === psychReportStatusFilter)
+                .sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+
+            const csvRows = tableRows.map(apt => {
+                const pat = getPatientById(apt.patientId);
+                const psy = getPsychById(apt.psychologistId);
+                const myCut = Number(apt.value || 0) * ((psy.sharePercent || 70) / 100);
+                return {
+                    Data: formatDateBR(apt.date),
+                    Hora: apt.time,
+                    Paciente: pat.name,
+                    Valor_Repasse: myCut.toFixed(2).replace('.', ','),
+                    Status: apt.paymentStatus
+                };
+            });
 
             return `
                 <div class="space-y-6">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Meus Honorários & Repasses</h2>
-                        <p class="text-sm text-slate-500">Acompanhamento dos valores referentes aos seus pacientes atendidos.</p>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">Meus Repasses & Relatório Financeiro</h2>
+                            <p class="text-sm text-slate-500">Consulte o que já recebeu e o que falta receber no período selecionado.</p>
+                        </div>
+                        <div class="no-print flex flex-wrap gap-2">
+                            <button onclick='exportCsvReport(${JSON.stringify(csvRows)}, "meus-repasses-${psychReportDateStart}-a-${psychReportDateEnd}.csv")' class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold rounded-xl">
+                                <i data-lucide="download" class="w-4 h-4 text-sage-600"></i>
+                                <span>Gerar Relatório CSV</span>
+                            </button>
+                            <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold rounded-xl shadow-xs">
+                                <i data-lucide="printer" class="w-4 h-4"></i>
+                                <span>Imprimir / PDF</span>
+                            </button>
+                        </div>
                     </div>
 
+                    <!-- Filtro de Período (Data Inicial -> Data Final) -->
+                    <div class="no-print bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-wrap items-end gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Data Inicial</label>
+                            <input type="date" value="${psychReportDateStart}" onchange="psychReportDateStart = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Data Final</label>
+                            <input type="date" value="${psychReportDateEnd}" onchange="psychReportDateEnd = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Filtrar Status</label>
+                            <select onchange="psychReportStatusFilter = this.value; renderApp()" class="rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white">
+                                <option value="ALL" ${psychReportStatusFilter === 'ALL' ? 'selected' : ''}>Todos (Recebido + Falta Receber)</option>
+                                <option value="Pago" ${psychReportStatusFilter === 'Pago' ? 'selected' : ''}>Somente Recebido</option>
+                                <option value="Pendente" ${psychReportStatusFilter === 'Pendente' ? 'selected' : ''}>Somente Falta Receber</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Cards: Quanto Recebeu x Quanto Falta Receber -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div class="bg-gradient-to-br from-sage-700 to-sage-800 text-white p-5 rounded-2xl shadow-sm">
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-semibold uppercase tracking-wider text-sage-200">Disponível p/ Repasse (Pago)</span>
-                                <i data-lucide="wallet" class="w-5 h-5 text-sage-200"></i>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-sage-200">Quanto Recebeu</span>
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-sage-200"></i>
                             </div>
-                            <div class="text-2xl font-bold">${formatCurrency(totalReceivablePaid)}</div>
-                            <div class="text-xs text-sage-200 mt-1">Sessões já quitadas na clínica</div>
+                            <div class="text-2xl font-bold">${formatCurrency(receivedPayout)}</div>
+                            <div class="text-xs text-sage-200 mt-1">Repasses já pagos no período</div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-amber-200 shadow-xs">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-amber-700">Quanto Falta Receber</span>
+                                <i data-lucide="clock" class="w-5 h-5 text-amber-500"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-slate-900">${formatCurrency(pendingPayout)}</div>
+                            <div class="text-xs text-amber-700 font-medium mt-1">Repasses pendentes no período</div>
                         </div>
 
                         <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Aguardando Pagamento</span>
-                                <i data-lucide="hourglass" class="w-5 h-5 text-amber-500"></i>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total do Período</span>
+                                <i data-lucide="wallet" class="w-5 h-5 text-sky-600"></i>
                             </div>
-                            <div class="text-2xl font-bold text-slate-900">${formatCurrency(totalReceivablePending)}</div>
-                            <div class="text-xs text-amber-600 font-medium mt-1">Sua parte sobre sessões pendentes</div>
-                        </div>
-
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Previsão Total do Período</span>
-                                <i data-lucide="calculator" class="w-5 h-5 text-sky-600"></i>
-                            </div>
-                            <div class="text-2xl font-bold text-slate-900">${formatCurrency(totalReceivablePaid + totalReceivablePending)}</div>
-                            <div class="text-xs text-slate-500 mt-1">Sobre ${formatCurrency(totalGrossGenerated)} brutos</div>
+                            <div class="text-2xl font-bold text-slate-900">${formatCurrency(receivedPayout + pendingPayout)}</div>
+                            <div class="text-xs text-slate-500 mt-1">${formatDateBR(psychReportDateStart)} até ${formatDateBR(psychReportDateEnd)}</div>
                         </div>
                     </div>
 
+                    <!-- Tabela limpa: apenas Data/Hora, Paciente, Valor do Repasse e Status -->
                     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
                         <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-                            <h3 class="font-semibold text-slate-800">Extrato Detalhado por Sessão</h3>
-                            <span class="text-xs text-slate-400">${sortedApts.length} sessões</span>
+                            <h3 class="font-semibold text-slate-800">Extrato de Repasses do Período</h3>
+                            <span class="text-xs text-slate-400">${tableRows.length} registro(s)</span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
@@ -1939,15 +2265,14 @@
                                     <tr class="bg-slate-50 text-[11px] font-semibold uppercase text-slate-500 border-b border-slate-200">
                                         <th class="py-3 px-4">Data / Hora</th>
                                         <th class="py-3 px-4">Paciente</th>
-                                        <th class="py-3 px-3 text-right">Sessão</th>
-                                        <th class="py-3 px-3 text-right">Seu Repasse</th>
+                                        <th class="py-3 px-4 text-right">Valor do Repasse</th>
                                         <th class="py-3 px-4">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100 text-sm">
-                                    ${sortedApts.length === 0 ? `
-                                        <tr><td colspan="5" class="py-8 text-center text-slate-400">Nenhuma sessão encontrada para os seus pacientes.</td></tr>
-                                    ` : sortedApts.map(apt => {
+                                    ${tableRows.length === 0 ? `
+                                        <tr><td colspan="4" class="py-8 text-center text-slate-400">Nenhum repasse encontrado no período selecionado.</td></tr>
+                                    ` : tableRows.map(apt => {
                                         const pat = getPatientById(apt.patientId);
                                         const psy = getPsychById(apt.psychologistId);
                                         const myCut = Number(apt.value || 0) * ((psy.sharePercent || 70) / 100);
@@ -1955,11 +2280,10 @@
                                             <tr class="hover:bg-slate-50/70">
                                                 <td class="py-3.5 px-4 whitespace-nowrap">
                                                     <div class="font-medium text-slate-800">${formatDateBR(apt.date)}</div>
-                                                    <div class="text-xs text-slate-400">${apt.time} • ${apt.status}</div>
+                                                    <div class="text-xs text-slate-400">${apt.time}</div>
                                                 </td>
                                                 <td class="py-3.5 px-4 font-medium text-slate-800">${pat.name}</td>
-                                                <td class="py-3.5 px-3 text-right text-slate-500">${formatCurrency(apt.value)}</td>
-                                                <td class="py-3.5 px-3 text-right font-bold text-sage-700">${formatCurrency(myCut)}</td>
+                                                <td class="py-3.5 px-4 text-right font-bold text-sage-700">${formatCurrency(myCut)}</td>
                                                 <td class="py-3.5 px-4">${getPaymentBadge(apt.paymentStatus, apt.paymentMethod)}</td>
                                             </tr>
                                         `;
@@ -2010,14 +2334,18 @@
                                         <div class="flex items-start justify-between gap-3">
                                             <div>
                                                 <h3 class="font-bold text-slate-900 text-base">${pat.name}</h3>
-                                                <div class="text-xs text-slate-500 mt-0.5">${pat.phone} • Valor: ${formatCurrency(pat.sessionFee)}</div>
+                                                <div class="text-xs text-slate-500 mt-0.5">${pat.phone} ${pat.cpf ? `• CPF: ${pat.cpf}` : ''}</div>
                                             </div>
                                             <span class="px-2.5 py-1 rounded-lg bg-sage-50 text-sage-800 border border-sage-200 text-xs font-semibold">
                                                 ${reportsCount} evoluções
                                             </span>
                                         </div>
 
-                                        ${pat.notes ? `<p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl mt-3">${pat.notes}</p>` : ''}
+                                        <div class="text-[11px] text-slate-500 bg-slate-50 px-3 py-2 rounded-xl mt-3">
+                                            <strong>NFS-e:</strong> ${formatFullAddress(pat)}
+                                        </div>
+
+                                        ${pat.notes ? `<p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl mt-2">${pat.notes}</p>` : ''}
 
                                         <div class="mt-4 space-y-2">
                                             <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Sessões do Paciente</div>
@@ -2043,7 +2371,7 @@
                                             <span>Prontuário</span>
                                         </button>
                                         <div class="flex items-center gap-2">
-                                            <button onclick="openAppointmentModal(null, '${TODAY_STR}', '09:00', '${pat.psychologistId}', '${pat.id}')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl">
+                                            <button onclick="openAppointmentModal(null, '${selectedAgendaDate}', '09:00', '${pat.psychologistId}', '${pat.id}')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl">
                                                 Agendar
                                             </button>
                                             ${latestApt ? `
@@ -2078,13 +2406,7 @@
                             <p class="text-sm text-slate-500">Clique em qualquer horário <strong>Livre</strong> para designar um paciente.</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button onclick="shiftAgendaDate(-1)" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50">
-                                <i data-lucide="chevron-left" class="w-4 h-4"></i>
-                            </button>
                             <input type="date" value="${selectedAgendaDate}" onchange="selectedAgendaDate = this.value; renderApp()" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold">
-                            <button onclick="shiftAgendaDate(1)" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50">
-                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            </button>
                             <button onclick="selectedAgendaDate = TODAY_STR; renderApp()" class="px-3 py-2 text-xs font-semibold bg-sage-600 text-white rounded-xl">
                                 Hoje
                             </button>
@@ -2249,8 +2571,8 @@
                 <div class="space-y-6">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <h2 class="text-xl font-bold text-slate-900">Cadastro de Pacientes</h2>
-                            <p class="text-sm text-slate-500">Base de pacientes ativos, contatos e valores acordados.</p>
+                            <h2 class="text-xl font-bold text-slate-900">Cadastro de Pacientes & Dados Fiscais (NFS-e)</h2>
+                            <p class="text-sm text-slate-500">Base de pacientes com CPF, endereço completo e dados necessários para nota fiscal.</p>
                         </div>
                         <button onclick="openPatientModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-sage-600 hover:bg-sage-700 text-white text-sm font-semibold rounded-xl shadow-xs">
                             <i data-lucide="user-plus" class="w-4 h-4"></i>
@@ -2263,8 +2585,8 @@
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-slate-50 text-[11px] font-semibold uppercase text-slate-500 border-b border-slate-200">
-                                        <th class="py-3.5 px-4">Paciente</th>
-                                        <th class="py-3.5 px-4">WhatsApp / CPF</th>
+                                        <th class="py-3.5 px-4">Paciente & CPF</th>
+                                        <th class="py-3.5 px-4">Endereço Fiscal (NFS-e)</th>
                                         <th class="py-3.5 px-4">Psicólogo Responsável</th>
                                         <th class="py-3.5 px-3 text-right">Valor Sessão</th>
                                         <th class="py-3.5 px-4 text-right">Ações</th>
@@ -2279,11 +2601,11 @@
                                             <tr class="hover:bg-slate-50/70">
                                                 <td class="py-3.5 px-4">
                                                     <div class="font-semibold text-slate-900">${pat.name}</div>
-                                                    ${pat.notes ? `<div class="text-xs text-slate-400 truncate max-w-xs">${pat.notes}</div>` : ''}
+                                                    <div class="text-xs text-slate-500">CPF: <strong>${pat.cpf || 'Não inf.'}</strong> • ${pat.phone}</div>
+                                                    ${pat.email ? `<div class="text-[11px] text-slate-400">${pat.email}</div>` : ''}
                                                 </td>
-                                                <td class="py-3.5 px-4">
-                                                    <div class="text-slate-700">${pat.phone}</div>
-                                                    <div class="text-xs text-slate-400">${pat.cpf || 'CPF não inf.'}</div>
+                                                <td class="py-3.5 px-4 max-w-xs">
+                                                    <div class="text-xs text-slate-700 leading-relaxed">${formatFullAddress(pat)}</div>
                                                 </td>
                                                 <td class="py-3.5 px-4 text-slate-700">${psy.name}</td>
                                                 <td class="py-3.5 px-3 text-right font-semibold text-slate-800">${formatCurrency(pat.sessionFee)}</td>
@@ -2291,10 +2613,10 @@
                                                     <div class="inline-flex items-center gap-1.5">
                                                         ${canSeeClinicalHistory ? `
                                                             <button onclick="openPatientHistoryModal('${pat.id}')" class="px-2.5 py-1.5 bg-sage-50 hover:bg-sage-100 text-sage-700 border border-sage-200 text-xs font-semibold rounded-lg">
-                                                                Prontuário
+                                                                Ficha / Prontuário
                                                             </button>
                                                         ` : ''}
-                                                        <button onclick="openAppointmentModal(null, '${TODAY_STR}', '09:00', '${pat.psychologistId}', '${pat.id}')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg">
+                                                        <button onclick="openAppointmentModal(null, '${selectedAgendaDate}', '09:00', '${pat.psychologistId}', '${pat.id}')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg">
                                                             Agendar
                                                         </button>
                                                         <button onclick="openPatientModal('${pat.id}')" class="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg">
@@ -2442,6 +2764,8 @@
 
             showToast(id ? 'Agendamento atualizado!' : 'Sessão agendada com sucesso!', 'success');
             closeModal('modal-appointment');
+            selectedAgendaDate = date;
+            selectedCalendarMonth = date.slice(0, 7);
             await syncAllDataFromSupabase(false);
             renderApp();
         }
@@ -2556,14 +2880,22 @@
                 .filter(a => a.patientId === patientId)
                 .sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
 
-            document.getElementById('history-patient-name').textContent = `Prontuário: ${pat.name}`;
-            document.getElementById('history-patient-meta').textContent = `Tel: ${pat.phone} • CPF: ${pat.cpf || 'N/I'} • Responsável: ${psy.name}`;
+            document.getElementById('history-patient-name').textContent = `Ficha & Prontuário: ${pat.name}`;
+            document.getElementById('history-patient-meta').textContent = `CPF: ${pat.cpf || 'N/I'} • Tel: ${pat.phone} • Responsável: ${psy.name}`;
+
+            const fiscalBox = `
+                <div class="bg-sage-50/70 border border-sage-200/80 rounded-2xl p-4 text-xs text-slate-700 space-y-1">
+                    <div class="font-bold text-sage-900 uppercase tracking-wider text-[11px] mb-1">Dados Cadastrais & Nota Fiscal (NFS-e)</div>
+                    <div><strong>CPF:</strong> ${pat.cpf || 'Não informado'} • <strong>E-mail NFS-e:</strong> ${pat.email || 'Não informado'}</div>
+                    <div><strong>Endereço:</strong> ${formatFullAddress(pat)}</div>
+                </div>
+            `;
 
             const body = document.getElementById('history-patient-body');
             if (historyApts.length === 0) {
-                body.innerHTML = `<div class="text-center py-8 text-slate-400">Nenhuma sessão registrada para este paciente.</div>`;
+                body.innerHTML = `${fiscalBox}<div class="text-center py-8 text-slate-400">Nenhuma sessão registrada para este paciente.</div>`;
             } else {
-                body.innerHTML = historyApts.map(apt => `
+                body.innerHTML = fiscalBox + historyApts.map(apt => `
                     <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50 space-y-2">
                         <div class="flex flex-wrap items-center justify-between gap-2">
                             <div class="flex items-center gap-2">
@@ -2651,7 +2983,7 @@
             }
         }
 
-        // --- Pacientes ---
+        // --- Pacientes (Com Dados Fiscais) ---
         function openPatientModal(patientId = null, fromApt = false) {
             const psychSelect = document.getElementById('pat-psychologist');
             const accessibleIds = getAccessiblePsychIds();
@@ -2664,20 +2996,36 @@
 
             if (patientId) {
                 const pat = getPatientById(patientId);
-                document.getElementById('modal-patient-title').textContent = 'Editar Paciente';
+                document.getElementById('modal-patient-title').innerHTML = `<i data-lucide="user-cog" class="w-5 h-5 text-sage-600"></i><span>Editar Paciente & Dados Fiscais</span>`;
                 document.getElementById('pat-id').value = pat.id;
                 document.getElementById('pat-name').value = pat.name;
                 document.getElementById('pat-phone').value = pat.phone;
                 document.getElementById('pat-cpf').value = pat.cpf || '';
+                document.getElementById('pat-email').value = pat.email || '';
+                document.getElementById('pat-cep').value = pat.zipCode || '';
+                document.getElementById('pat-street').value = pat.street || '';
+                document.getElementById('pat-number').value = pat.streetNumber || '';
+                document.getElementById('pat-complement').value = pat.complement || '';
+                document.getElementById('pat-neighborhood').value = pat.neighborhood || '';
+                document.getElementById('pat-city').value = pat.city || '';
+                document.getElementById('pat-state').value = pat.state || '';
                 psychSelect.value = pat.psychologistId;
                 document.getElementById('pat-fee').value = pat.sessionFee;
                 document.getElementById('pat-notes').value = pat.notes || '';
             } else {
-                document.getElementById('modal-patient-title').textContent = 'Cadastrar Novo Paciente';
+                document.getElementById('modal-patient-title').innerHTML = `<i data-lucide="user-plus" class="w-5 h-5 text-sage-600"></i><span>Cadastrar Novo Paciente (NFS-e)</span>`;
                 document.getElementById('pat-id').value = '';
                 document.getElementById('pat-name').value = '';
                 document.getElementById('pat-phone').value = '';
                 document.getElementById('pat-cpf').value = '';
+                document.getElementById('pat-email').value = '';
+                document.getElementById('pat-cep').value = '';
+                document.getElementById('pat-street').value = '';
+                document.getElementById('pat-number').value = '';
+                document.getElementById('pat-complement').value = '';
+                document.getElementById('pat-neighborhood').value = '';
+                document.getElementById('pat-city').value = '';
+                document.getElementById('pat-state').value = '';
                 const preselectedPsych = document.getElementById('apt-psychologist')?.value;
                 if (preselectedPsych && Array.from(psychSelect.options).some(o => o.value === preselectedPsych)) {
                     psychSelect.value = preselectedPsych;
@@ -2699,23 +3047,54 @@
             const savedId = id || ('pat-' + Date.now());
             const sessionFee = parseFloat(document.getElementById('pat-fee').value) || 180;
 
-            const payload = {
+            const fullPayload = {
                 id: savedId,
                 name: document.getElementById('pat-name').value.trim(),
                 phone: document.getElementById('pat-phone').value.trim(),
                 cpf: document.getElementById('pat-cpf').value.trim(),
+                email: document.getElementById('pat-email').value.trim(),
+                zip_code: document.getElementById('pat-cep').value.trim(),
+                street: document.getElementById('pat-street').value.trim(),
+                street_number: document.getElementById('pat-number').value.trim(),
+                complement: document.getElementById('pat-complement').value.trim(),
+                neighborhood: document.getElementById('pat-neighborhood').value.trim(),
+                city: document.getElementById('pat-city').value.trim(),
+                state: document.getElementById('pat-state').value.trim().toUpperCase(),
                 psychologist_id: document.getElementById('pat-psychologist').value || null,
                 session_fee: sessionFee,
                 notes: document.getElementById('pat-notes').value.trim()
             };
 
-            const { error } = await supabaseClient.from('patients').upsert(payload);
+            let { error } = await supabaseClient.from('patients').upsert(fullPayload);
+
+            // Caso o SQL ainda não tenha sido rodado com as colunas extras, salva os campos base sem travar
+            if (error && error.message && error.message.toLowerCase().includes('column')) {
+                const extraInfo = [
+                    fullPayload.email ? `E-mail NFS-e: ${fullPayload.email}` : '',
+                    fullPayload.zip_code ? `CEP: ${fullPayload.zip_code}` : '',
+                    fullPayload.street ? `End: ${fullPayload.street}, ${fullPayload.street_number || 's/n'} ${fullPayload.complement ? '(' + fullPayload.complement + ')' : ''} - ${fullPayload.neighborhood || ''} - ${fullPayload.city || ''}/${fullPayload.state || ''}` : ''
+                ].filter(Boolean).join(' | ');
+
+                const fallbackPayload = {
+                    id: fullPayload.id,
+                    name: fullPayload.name,
+                    phone: fullPayload.phone,
+                    cpf: fullPayload.cpf,
+                    psychologist_id: fullPayload.psychologist_id,
+                    session_fee: fullPayload.session_fee,
+                    notes: [fullPayload.notes, extraInfo].filter(Boolean).join('\n')
+                };
+
+                const retry = await supabaseClient.from('patients').upsert(fallbackPayload);
+                error = retry.error;
+            }
+
             if (error) {
                 showToast('Erro ao salvar paciente: ' + error.message, 'error');
                 return;
             }
 
-            showToast('Paciente salvo com sucesso!', 'success');
+            showToast('Paciente e dados fiscais salvos com sucesso!', 'success');
             closeModal('modal-patient');
             await syncAllDataFromSupabase(false);
 
