@@ -2757,6 +2757,14 @@
                                 .filter(a => a.psychologistId === psych.id && a.date === selectedAgendaDate && a.status !== 'Cancelada')
                                 .sort((a, b) => a.time.localeCompare(b.time));
 
+                            const dayOfWeek = getDateDayOfWeek(selectedAgendaDate);
+                            const isAvailableDay = Array.isArray(psych.availableDays)
+                                ? psych.availableDays.includes(dayOfWeek)
+                                : [1, 2, 3, 4, 5].includes(dayOfWeek);
+
+                            const workStartMin = timeToMinutes(psych.workStartTime || '08:00');
+                            const workEndMin = timeToMinutes(psych.workEndTime || '18:00');
+
                             const candidateMins = buildSlotCandidatesForDay(dayApts);
 
                             const timelineItems = [];
@@ -2774,15 +2782,14 @@
                                         renderedAptIds.add(overlappingApt.id);
                                         timelineItems.push({ type: 'booked', apt: overlappingApt });
                                     }
-                                } else {
-                                    const isStandardSlot = [480, 540, 600, 660, 840, 900, 960, 1020, 1080].includes(slotMin);
+                                } else if (isAvailableDay && slotMin >= workStartMin && slotMin < workEndMin) {
+                                    const isStandardSlot = [480, 540, 600, 660, 780, 800, 820, 840, 900, 960, 1020, 1080].includes(slotMin);
                                     const isPostSessionSlot = dayApts.some(apt => (timeToMinutes(apt.time) + Number(apt.durationMinutes || 50)) === slotMin);
                                     if (isStandardSlot || isPostSessionSlot) {
                                         timelineItems.push({ type: 'free', slotStr: minutesToTime(slotMin), isPostSession: isPostSessionSlot && !isStandardSlot });
                                     }
                                 }
                             });
-
                             return `
                                 <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden flex flex-col">
                                     <div class="p-4 ${c.bg} border-b ${c.border}">
