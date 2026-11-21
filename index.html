@@ -609,6 +609,43 @@
                         <option value="false">Inativo / Afastado</option>
                     </select>
                 </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Horário de Entrada *</label>
+                        <input type="time" id="psych-start-time" required value="08:00" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Horário de Saída *</label>
+                        <input type="time" id="psych-end-time" required value="18:00" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Dias de Atendimento na Semana *</label>
+                    <div class="grid grid-cols-4 sm:grid-cols-7 gap-1.5">
+                        <label class="flex items-center justify-center gap-1 p-2 rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:bg-slate-50">
+                            <input type="checkbox" name="psychAvailableDay" value="1" checked class="rounded text-sage-600"> Seg
+                        </label>
+                        <label class="flex items-center justify-center gap-1 p-2 rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:bg-slate-50">
+                            <input type="checkbox" name="psychAvailableDay" value="2" checked class="rounded text-sage-600"> Ter
+                        </label>
+                        <label class="flex items-center justify-center gap-1 p-2 rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:bg-slate-50">
+                            <input type="checkbox" name="psychAvailableDay" value="3" checked class="rounded text-sage-600"> Qua
+                        </label>
+                        <label class="flex items-center justify-center gap-1 p-2 rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:bg-slate-50">
+                            <input type="checkbox" name="psychAvailableDay" value="4" checked class="rounded text-sage-600"> Qui
+                        </label>
+                        <label class="flex items-center justify-center gap-1 p-2 rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:bg-slate-50">
+                            <input type="checkbox" name="psychAvailableDay" value="5" checked class="rounded text-sage-600"> Sex
+                        </label>
+                        <label class="flex items-center justify-center gap-1 p-2 rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:bg-slate-50">
+                            <input type="checkbox" name="psychAvailableDay" value="6" class="rounded text-sage-600"> Sáb
+                        </label>
+                        <label class="flex items-center justify-center gap-1 p-2 rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:bg-slate-50">
+                            <input type="checkbox" name="psychAvailableDay" value="0" class="rounded text-sage-600"> Dom
+                        </label>
+                    </div>
+                </div>
                 <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
                     <button type="button" onclick="closeModal('modal-psychologist')" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
                     <button type="submit" class="px-5 py-2 text-sm font-semibold text-white bg-sage-600 hover:bg-sage-700 rounded-xl">Salvar Profissional</button>
@@ -1045,7 +1082,10 @@
                     specialty: p.specialty,
                     sharePercent: p.share_percent,
                     color: p.color,
-                    active: p.active
+                    active: p.active,
+                    availableDays: Array.isArray(p.available_days) ? p.available_days.map(Number) : [1, 2, 3, 4, 5],
+                    workStartTime: p.work_start_time || '08:00',
+                    workEndTime: p.work_end_time || '18:00'
                 }));
 
                 db.patients = (patRes.data || []).map(p => ({
@@ -2661,6 +2701,29 @@
             });
             return [...new Set(baseMins)].sort((a, b) => a - b);
         }
+        function getDateDayOfWeek(dateStr) {
+            if (!dateStr) return 1;
+            const [y, m, d] = dateStr.split('-').map(Number);
+            return new Date(y, (m || 1) - 1, d || 1).getDay();
+        }
+
+        function formatPsychScheduleSummary(psych) {
+            const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            const days = Array.isArray(psych.availableDays) && psych.availableDays.length
+                ? [...psych.availableDays].sort((a, b) => a - b).map(d => dayNames[d]).join(', ')
+                : 'Seg–Sex';
+            return `${days} • ${psych.workStartTime || '08:00'} às ${psych.workEndTime || '18:00'}`;
+        }
+
+        function isSlotWithinPsychSchedule(psych, dateStr, slotMin, slotDuration = 50) {
+            const allowedDays = Array.isArray(psych.availableDays) ? psych.availableDays : [1, 2, 3, 4, 5];
+            const dayOfWeek = getDateDayOfWeek(dateStr);
+            if (!allowedDays.includes(dayOfWeek)) return false;
+
+            const startLimit = timeToMinutes(psych.workStartTime || '08:00');
+            const endLimit = timeToMinutes(psych.workEndTime || '18:00');
+            return slotMin >= startLimit && (slotMin + slotDuration) <= endLimit;
+        }
 
         function renderReceptionAvailabilityGrid() {
             const activePsychs = db.psychologists.filter(p => p.active);
@@ -3363,6 +3426,8 @@
         // --- Psicólogos ---
         function openPsychologistModal(psychId = null, fromPat = false) {
             document.getElementById('psych-from-pat').value = fromPat ? 'true' : 'false';
+            const defaultDays = [1, 2, 3, 4, 5];
+
             if (psychId) {
                 const p = getPsychById(psychId);
                 document.getElementById('modal-psych-title').textContent = 'Editar Psicólogo(a)';
@@ -3373,6 +3438,13 @@
                 document.getElementById('psych-specialty').value = p.specialty;
                 document.getElementById('psych-color').value = p.color;
                 document.getElementById('psych-active').value = String(p.active);
+                document.getElementById('psych-start-time').value = p.workStartTime || '08:00';
+                document.getElementById('psych-end-time').value = p.workEndTime || '18:00';
+
+                const days = Array.isArray(p.availableDays) ? p.availableDays : defaultDays;
+                document.querySelectorAll('input[name="psychAvailableDay"]').forEach(cb => {
+                    cb.checked = days.includes(Number(cb.value));
+                });
             } else {
                 document.getElementById('modal-psych-title').textContent = 'Cadastrar Novo Psicólogo(a)';
                 document.getElementById('psych-id').value = '';
@@ -3382,6 +3454,12 @@
                 document.getElementById('psych-specialty').value = '';
                 document.getElementById('psych-color').value = 'emerald';
                 document.getElementById('psych-active').value = 'true';
+                document.getElementById('psych-start-time').value = '08:00';
+                document.getElementById('psych-end-time').value = '18:00';
+
+                document.querySelectorAll('input[name="psychAvailableDay"]').forEach(cb => {
+                    cb.checked = defaultDays.includes(Number(cb.value));
+                });
             }
             openModal('modal-psychologist');
         }
@@ -3391,6 +3469,23 @@
             const id = document.getElementById('psych-id').value;
             const fromPat = document.getElementById('psych-from-pat').value === 'true';
             const savedId = id || ('psy-' + Date.now());
+
+            const availableDays = Array.from(document.querySelectorAll('input[name="psychAvailableDay"]:checked'))
+                .map(cb => Number(cb.value));
+
+            if (availableDays.length === 0) {
+                showToast('Selecione pelo menos um dia da semana disponível.', 'error');
+                return;
+            }
+
+            const workStartTime = document.getElementById('psych-start-time').value || '08:00';
+            const workEndTime = document.getElementById('psych-end-time').value || '18:00';
+
+            if (timeToMinutes(workEndTime) <= timeToMinutes(workStartTime)) {
+                showToast('O horário de saída deve ser maior que o horário de entrada.', 'error');
+                return;
+            }
+
             const payload = {
                 id: savedId,
                 name: document.getElementById('psych-name').value.trim(),
@@ -3398,7 +3493,10 @@
                 share_percent: parseInt(document.getElementById('psych-share').value, 10) || 70,
                 specialty: document.getElementById('psych-specialty').value.trim(),
                 color: document.getElementById('psych-color').value,
-                active: document.getElementById('psych-active').value === 'true'
+                active: document.getElementById('psych-active').value === 'true',
+                available_days: availableDays,
+                work_start_time: workStartTime,
+                work_end_time: workEndTime
             };
 
             const { error } = await supabaseClient.from('psychologists').upsert(payload);
