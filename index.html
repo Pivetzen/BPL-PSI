@@ -232,6 +232,93 @@
 
     <!-- ================= MODALS ================= -->
 
+    <!-- Modal: Check-in do Atendimento (Compareceu / Não Compareceu -> Validação Admin) -->
+    <div id="modal-checkin" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden border border-slate-100 fade-in">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-indigo-50/70">
+                <h3 class="font-semibold text-slate-800 flex items-center gap-2">
+                    <i data-lucide="clipboard-check" class="w-5 h-5 text-indigo-600"></i>
+                    <span>Registrar Check-in do Paciente</span>
+                </h3>
+                <button onclick="closeModal('modal-checkin')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form id="form-checkin" onsubmit="submitAttendanceCheckin(event)" class="p-6 space-y-4">
+                <input type="hidden" id="checkin-apt-id">
+                <div id="checkin-summary-box" class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 text-sm"></div>
+
+                <div class="bg-amber-50 border border-amber-200/80 rounded-xl p-3 text-xs text-amber-800">
+                    O registro será enviado para análise e validação final no perfil do <strong>Administrador</strong>.
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-2">O paciente compareceu? *</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:bg-emerald-50/50 cursor-pointer">
+                            <input type="radio" name="checkinAttended" value="true" checked class="w-4 h-4 text-emerald-600">
+                            <div>
+                                <div class="text-xs font-bold text-emerald-800">Compareceu</div>
+                                <div class="text-[11px] text-slate-500">Paciente presente</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:bg-rose-50/50 cursor-pointer">
+                            <input type="radio" name="checkinAttended" value="false" class="w-4 h-4 text-rose-600">
+                            <div>
+                                <div class="text-xs font-bold text-rose-800">Não Compareceu</div>
+                                <div class="text-[11px] text-slate-500">Ausência / Falta</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Observação do Atendimento (opcional)</label>
+                    <input type="text" id="checkin-notes" placeholder="Ex: Chegou 5 min atrasado, avisou no WhatsApp..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('modal-checkin')" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
+                    <button type="submit" class="px-5 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-xs">Enviar para Validação</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Validar Presença Informada pelo Atendimento (ADMIN) -->
+    <div id="modal-validate-attendance" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden border border-slate-100 fade-in">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-sage-50/70">
+                <h3 class="font-semibold text-slate-800 flex items-center gap-2">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-sage-600"></i>
+                    <span>Validar Presença do Paciente</span>
+                </h3>
+                <button onclick="closeModal('modal-validate-attendance')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form id="form-validate-attendance" onsubmit="confirmAttendanceValidation(event)" class="p-6 space-y-4">
+                <input type="hidden" id="val-apt-id">
+                <div id="val-summary-box" class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 text-sm space-y-1"></div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Status Final Validado pelo Admin *</label>
+                    <select id="val-final-status" required class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white">
+                        <option value="Realizada">Realizada (Paciente Compareceu)</option>
+                        <option value="Falta">Falta (Paciente Não Compareceu)</option>
+                        <option value="Confirmada">Confirmada (Aguardando Sessão)</option>
+                        <option value="Cancelada">Cancelada</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('modal-validate-attendance')" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
+                    <button type="submit" class="px-5 py-2 text-sm font-semibold text-white bg-sage-600 hover:bg-sage-700 rounded-xl shadow-xs">Confirmar Validação</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Modal: Aprovar / Editar Permissões de Usuário (ADMIN) -->
     <div id="modal-user-permission" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden border border-slate-100 fade-in">
@@ -277,7 +364,7 @@
         </div>
     </div>
 
-    <!-- Modal: Novo / Editar Agendamento -->
+    <!-- Modal: Novo / Editar Agendamento (Com Duração Flexível 30/40/50/60+ min e Horário Livre) -->
     <div id="modal-appointment" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden border border-slate-100 fade-in">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
@@ -308,27 +395,36 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Data *</label>
-                        <input type="date" id="apt-date" required class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
+                        <input type="date" id="apt-date" required onchange="updateEndTimePreview()" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Horário *</label>
-                        <select id="apt-time" required class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white">
-                            <option value="08:00">08:00</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                            <option value="19:00">19:00</option>
-                        </select>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Horário Início *</label>
+                        <input type="time" id="apt-time" list="common-time-slots" required onchange="updateEndTimePreview()" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white">
+                        <datalist id="common-time-slots">
+                            <option value="08:00"><option value="09:00"><option value="10:00"><option value="11:00">
+                            <option value="13:00"><option value="13:30"><option value="13:40"><option value="14:00">
+                            <option value="15:00"><option value="16:00"><option value="17:00"><option value="18:00"><option value="19:00">
+                        </datalist>
                     </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Duração (min) *</label>
+                        <select id="apt-duration-preset" onchange="onDurationPresetChange()" class="w-full rounded-xl border border-slate-200 px-2.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white">
+                            <option value="30">30 min</option>
+                            <option value="40">40 min</option>
+                            <option value="50" selected>50 min</option>
+                            <option value="60">60 min</option>
+                            <option value="custom">Personalizado...</option>
+                        </select>
+                        <input type="number" id="apt-duration-custom" min="10" max="240" step="5" value="50" oninput="updateEndTimePreview()" class="hidden mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sage-500" placeholder="Minutos">
+                    </div>
+                </div>
+
+                <div class="text-xs text-sage-800 bg-sage-50 border border-sage-200/80 rounded-xl px-3 py-2 flex items-center justify-between">
+                    <span>Término previsto da sessão:</span>
+                    <strong id="apt-end-time-preview">—</strong>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -341,6 +437,7 @@
                         <select id="apt-status" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-white">
                             <option value="Agendada">Agendada</option>
                             <option value="Confirmada">Confirmada (Na Recepção)</option>
+                            <option value="Aguardando Validação">Aguardando Validação (Check-in)</option>
                             <option value="Realizada">Realizada</option>
                             <option value="Falta">Falta</option>
                             <option value="Cancelada">Cancelada</option>
@@ -536,7 +633,6 @@
                 <input type="hidden" id="pat-id">
                 <input type="hidden" id="pat-from-apt" value="false">
 
-                <!-- Identificação & Atendimento -->
                 <div class="space-y-4">
                     <div class="text-xs font-bold uppercase tracking-wider text-sage-700">1. Identificação & Acompanhamento</div>
                     <div>
@@ -574,7 +670,6 @@
                     </div>
                 </div>
 
-                <!-- Endereço Fiscal para Nota Fiscal -->
                 <div class="space-y-4 pt-3 border-t border-slate-100">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold uppercase tracking-wider text-sage-700">2. Endereço Completo para Nota Fiscal (NFS-e)</span>
@@ -717,7 +812,7 @@
         };
 
         let selectedAgendaDate = TODAY_STR;
-        let selectedCalendarMonth = TODAY_STR.slice(0, 7); // 'YYYY-MM'
+        let selectedCalendarMonth = TODAY_STR.slice(0, 7);
         let selectedAgendaPsychFilter = 'ALL';
 
         let financeFilterStatus = 'ALL';
@@ -727,7 +822,68 @@
 
         let psychReportDateStart = getMonthStartStr(TODAY_STR);
         let psychReportDateEnd = getMonthEndStr(TODAY_STR);
-        let psychReportStatusFilter = 'ALL'; // 'ALL' | 'Pago' | 'Pendente'
+        let psychReportStatusFilter = 'ALL';
+
+        let patientSearchQuery = '';
+
+        /**
+         * ============================================================================
+         * HELPERS DE HORÁRIO E DURAÇÃO (EM MINUTOS DESDE 00:00)
+         * ============================================================================
+         */
+        function timeToMinutes(hhmm) {
+            if (!hhmm || !hhmm.includes(':')) return 0;
+            const [h, m] = hhmm.split(':').map(Number);
+            return (h * 60) + (m || 0);
+        }
+
+        function minutesToTime(totalMins) {
+            const normalized = ((totalMins % 1440) + 1440) % 1440;
+            const h = Math.floor(normalized / 60);
+            const m = normalized % 60;
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        }
+
+        function getAppointmentEndTime(apt) {
+            const start = timeToMinutes(apt.time);
+            const dur = Number(apt.durationMinutes || 50);
+            return minutesToTime(start + dur);
+        }
+
+        function hasTimeOverlap(startA, durA, startB, durB) {
+            const endA = startA + Number(durA || 50);
+            const endB = startB + Number(durB || 50);
+            return startA < endB && endA > startB;
+        }
+
+        function getDurationInputValue() {
+            const preset = document.getElementById('apt-duration-preset')?.value;
+            if (preset === 'custom') {
+                return Math.max(5, parseInt(document.getElementById('apt-duration-custom')?.value, 10) || 50);
+            }
+            return parseInt(preset, 10) || 50;
+        }
+
+        function onDurationPresetChange() {
+            const preset = document.getElementById('apt-duration-preset').value;
+            const customInput = document.getElementById('apt-duration-custom');
+            if (preset === 'custom') {
+                customInput.classList.remove('hidden');
+                customInput.focus();
+            } else {
+                customInput.classList.add('hidden');
+                customInput.value = preset;
+            }
+            updateEndTimePreview();
+        }
+
+        function updateEndTimePreview() {
+            const startStr = document.getElementById('apt-time')?.value || '09:00';
+            const dur = getDurationInputValue();
+            const endStr = minutesToTime(timeToMinutes(startStr) + dur);
+            const el = document.getElementById('apt-end-time-preview');
+            if (el) el.textContent = `${startStr} às ${endStr} (${dur} min)`;
+        }
 
         /**
          * ============================================================================
@@ -916,12 +1072,14 @@
                     patientId: a.patient_id,
                     date: a.date,
                     time: a.time,
+                    durationMinutes: Number(a.duration_minutes || 50),
                     value: Number(a.value || 0),
                     status: a.status,
                     paymentStatus: a.payment_status,
                     paymentMethod: a.payment_method || '',
                     notes: a.notes || '',
-                    report: a.report || null
+                    report: a.report || null,
+                    attendanceReport: a.attendance_report || null
                 }));
 
                 if (currentUserProfile?.role === 'ADMIN') {
@@ -1017,8 +1175,9 @@
             const styles = {
                 'Agendada': 'bg-sky-50 text-sky-700 border-sky-200',
                 'Confirmada': 'bg-indigo-50 text-indigo-700 border-indigo-200',
+                'Aguardando Validação': 'bg-amber-100 text-amber-900 border-amber-300',
                 'Realizada': 'bg-emerald-50 text-emerald-700 border-emerald-200',
-                'Falta': 'bg-amber-50 text-amber-700 border-amber-200',
+                'Falta': 'bg-rose-50 text-rose-700 border-rose-200',
                 'Cancelada': 'bg-slate-100 text-slate-500 border-slate-200'
             };
             return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${styles[status] || styles['Agendada']}">${status}</span>`;
@@ -1076,9 +1235,7 @@
                         document.getElementById('pat-state').value = data.uf;
                     }
                 }
-            } catch (_) {
-                // Silencioso se o usuário preencher manualmente
-            }
+            } catch (_) {}
         }
 
         /**
@@ -1243,6 +1400,69 @@
             }
 
             lucide.createIcons();
+        }
+
+        /**
+         * ============================================================================
+         * VALIDAÇÃO DE PRESENÇA (ADMIN)
+         * ============================================================================
+         */
+        function openValidateAttendanceModal(aptId) {
+            const apt = db.appointments.find(a => a.id === aptId);
+            if (!apt) return;
+            const pat = getPatientById(apt.patientId);
+            const psy = getPsychById(apt.psychologistId);
+            const att = apt.attendanceReport;
+
+            document.getElementById('val-apt-id').value = apt.id;
+            document.getElementById('val-summary-box').innerHTML = `
+                <div class="font-bold text-slate-900">${pat.name}</div>
+                <div class="text-xs text-slate-500">${psy.name} • ${formatDateBR(apt.date)} (${apt.time} – ${getAppointmentEndTime(apt)})</div>
+                ${att ? `
+                    <div class="mt-2 pt-2 border-t border-slate-200 text-xs">
+                        <strong>Informado pelo Atendimento (${att.reportedBy || 'Recepção'}):</strong>
+                        <span class="font-bold ${att.attended ? 'text-emerald-700' : 'text-rose-700'}">${att.attended ? 'Compareceu' : 'Não Compareceu'}</span>
+                        ${att.notes ? `<div class="text-slate-600 mt-0.5">Obs: "${att.notes}"</div>` : ''}
+                    </div>
+                ` : ''}
+            `;
+
+            if (att) {
+                document.getElementById('val-final-status').value = att.attended ? 'Realizada' : 'Falta';
+            } else {
+                document.getElementById('val-final-status').value = apt.status === 'Falta' ? 'Falta' : 'Realizada';
+            }
+
+            openModal('modal-validate-attendance');
+        }
+
+        async function confirmAttendanceValidation(e) {
+            e.preventDefault();
+            const aptId = document.getElementById('val-apt-id').value;
+            const finalStatus = document.getElementById('val-final-status').value;
+            const apt = db.appointments.find(a => a.id === aptId);
+
+            const updatedAttendance = {
+                ...(apt?.attendanceReport || {}),
+                validatedBy: currentUserProfile.full_name,
+                validatedAt: new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }),
+                finalStatus
+            };
+
+            const { error } = await supabaseClient
+                .from('appointments')
+                .update({ status: finalStatus, attendance_report: updatedAttendance })
+                .eq('id', aptId);
+
+            if (error) {
+                showToast('Erro ao validar presença: ' + error.message, 'error');
+                return;
+            }
+
+            showToast(`Presença validada como "${finalStatus}"!`, 'success');
+            closeModal('modal-validate-attendance');
+            await syncAllDataFromSupabase(false);
+            renderApp();
         }
 
         /**
@@ -1510,6 +1730,7 @@
         function renderAdminDashboard() {
             const metrics = calculateFinancialMetrics(db.appointments);
             const todayApts = db.appointments.filter(a => a.date === TODAY_STR).sort((a, b) => a.time.localeCompare(b.time));
+            const awaitingValidationApts = db.appointments.filter(a => a.status === 'Aguardando Validação');
             const activePsychs = db.psychologists.filter(p => p.active);
 
             const psychBreakdown = activePsychs.map(psych => {
@@ -1523,7 +1744,7 @@
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Painel Executivo da Clínica</h2>
-                            <p class="text-sm text-slate-500">Controle financeiro, repasses profissionais e movimento operacional.</p>
+                            <p class="text-sm text-slate-500">Controle financeiro, validação de presenças e movimento operacional.</p>
                         </div>
                         <div class="flex flex-wrap gap-2">
                             <button onclick="openAppointmentModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-sage-600 hover:bg-sage-700 text-white text-sm font-semibold rounded-xl shadow-xs">
@@ -1537,15 +1758,38 @@
                         </div>
                     </div>
 
-                    ${db.psychologists.length === 0 ? `
-                        <div class="bg-sky-50 border border-sky-200 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                            <div>
-                                <h3 class="font-bold text-sky-900 text-sm">Primeiro Passo: Cadastre os Psicólogos da Clínica</h3>
-                                <p class="text-xs text-sky-700 mt-0.5">Para vincular psicólogos responsáveis aos pacientes e abrir a agenda, cadastre os profissionais na aba Psicólogos.</p>
+                    ${awaitingValidationApts.length > 0 ? `
+                        <div class="bg-amber-50 border border-amber-300 rounded-2xl p-4 sm:p-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-bold text-amber-950 text-sm flex items-center gap-2">
+                                    <i data-lucide="alert-circle" class="w-4 h-4 text-amber-700"></i>
+                                    <span>Check-ins do Atendimento Aguardando Sua Validação (${awaitingValidationApts.length})</span>
+                                </h3>
                             </div>
-                            <button onclick="openPsychologistModal()" class="px-4 py-2 bg-sky-600 text-white text-xs font-semibold rounded-xl shrink-0">
-                                + Cadastrar Psicólogo
-                            </button>
+                            <div class="divide-y divide-amber-200/70 bg-white rounded-xl border border-amber-200">
+                                ${awaitingValidationApts.map(apt => {
+                                    const pat = getPatientById(apt.patientId);
+                                    const psy = getPsychById(apt.psychologistId);
+                                    const attended = apt.attendanceReport?.attended;
+                                    return `
+                                        <div class="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                            <div>
+                                                <div class="flex flex-wrap items-center gap-2">
+                                                    <span class="font-bold text-sm text-slate-900">${pat.name}</span>
+                                                    <span class="text-xs text-slate-500">${formatDateBR(apt.date)} • ${apt.time} (${apt.durationMinutes || 50} min)</span>
+                                                    <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${attended ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                                                        Atendimento informou: ${attended ? 'Compareceu' : 'Não Compareceu'}
+                                                    </span>
+                                                </div>
+                                                <div class="text-xs text-slate-500 mt-0.5">Psicólogo: ${psy.name}${apt.attendanceReport?.notes ? ` • Obs: "${apt.attendanceReport.notes}"` : ''}</div>
+                                            </div>
+                                            <button onclick="openValidateAttendanceModal('${apt.id}')" class="px-3.5 py-2 bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold rounded-xl shrink-0">
+                                                Validar Presença
+                                            </button>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
                         </div>
                     ` : ''}
 
@@ -1664,13 +1908,15 @@
                                         <div class="p-3 rounded-xl border border-slate-100 bg-slate-50/60 hover:bg-slate-50 flex items-center justify-between gap-3">
                                             <div class="min-w-0">
                                                 <div class="flex items-center gap-2">
-                                                    <span class="text-xs font-bold text-sage-700 bg-sage-100 px-2 py-0.5 rounded-md">${apt.time}</span>
+                                                    <span class="text-xs font-bold text-sage-700 bg-sage-100 px-2 py-0.5 rounded-md">${apt.time}–${getAppointmentEndTime(apt)}</span>
                                                     <span class="font-semibold text-sm text-slate-800 truncate">${pat.name}</span>
                                                 </div>
                                                 <div class="text-xs text-slate-500 mt-1 truncate">${psy.name} • ${formatCurrency(apt.value)}</div>
                                             </div>
                                             <div class="flex flex-col items-end gap-1 shrink-0">
-                                                ${getStatusBadge(apt.status)}
+                                                ${apt.status === 'Aguardando Validação' ? `
+                                                    <button onclick="openValidateAttendanceModal('${apt.id}')" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-200 text-amber-950 hover:bg-amber-300">Validar Check-in</button>
+                                                ` : getStatusBadge(apt.status)}
                                                 ${apt.paymentStatus === 'Pendente' ? `
                                                     <button onclick="openPaymentModal('${apt.id}')" class="text-[11px] font-semibold text-emerald-700 hover:underline">Dar Baixa</button>
                                                 ` : `<span class="text-[11px] text-emerald-600 font-medium">Pago</span>`}
@@ -1723,6 +1969,7 @@
                 return {
                     Data: formatDateBR(apt.date),
                     Hora: apt.time,
+                    Duracao_Min: apt.durationMinutes || 50,
                     Paciente: pat.name,
                     Psicologo: psy.name,
                     Status_Sessao: apt.status,
@@ -1756,7 +2003,6 @@
                         </div>
                     </div>
 
-                    <!-- Resumo do Período -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div class="bg-white p-4 rounded-2xl border border-emerald-200 bg-emerald-50/30">
                             <div class="text-xs font-semibold uppercase text-emerald-700">Total Recebido no Período</div>
@@ -1826,7 +2072,7 @@
                                             <tr class="hover:bg-slate-50/70">
                                                 <td class="py-3.5 px-4 whitespace-nowrap">
                                                     <div class="font-medium text-slate-800">${formatDateBR(apt.date)}</div>
-                                                    <div class="text-xs text-slate-400">${apt.time} • ${apt.status}</div>
+                                                    <div class="text-xs text-slate-400">${apt.time}–${getAppointmentEndTime(apt)} • ${apt.status}</div>
                                                 </td>
                                                 <td class="py-3.5 px-4 font-medium text-slate-800">${pat.name}</td>
                                                 <td class="py-3.5 px-4">
@@ -1838,6 +2084,11 @@
                                                 <td class="py-3.5 px-4">${getPaymentBadge(apt.paymentStatus, apt.paymentMethod)}</td>
                                                 <td class="no-print py-3.5 px-4 text-right whitespace-nowrap">
                                                     <div class="inline-flex items-center gap-1.5">
+                                                        ${apt.status === 'Aguardando Validação' ? `
+                                                            <button onclick="openValidateAttendanceModal('${apt.id}')" class="px-2.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-lg">
+                                                                Validar
+                                                            </button>
+                                                        ` : ''}
                                                         ${apt.paymentStatus === 'Pendente' && apt.status !== 'Cancelada' ? `
                                                             <button onclick="openPaymentModal('${apt.id}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg">
                                                                 Dar Baixa
@@ -1943,11 +2194,10 @@
 
         function renderMonthCalendarHtml(scopedAppointments) {
             const [year, month] = selectedCalendarMonth.split('-').map(Number);
-            const firstDayOfWeek = new Date(year, month - 1, 1).getDay(); // 0 = Dom
+            const firstDayOfWeek = new Date(year, month - 1, 1).getDay();
             const daysInMonth = new Date(year, month, 0).getDate();
             const monthPrefix = `${year}-${String(month).padStart(2, '0')}`;
 
-            // Conta atendimentos (não cancelados) por data dentro do escopo permitido
             const countByDate = {};
             scopedAppointments.forEach(apt => {
                 if (apt.status === 'Cancelada') return;
@@ -1982,7 +2232,6 @@
                             ${isToday && !isSelected ? `<span class="text-[9px] font-bold uppercase px-1.5 py-0.2 rounded bg-sage-200 text-sage-900">Hoje</span>` : ''}
                         </div>
 
-                        <!-- Contador na quina inferior direita -->
                         <div class="self-end">
                             ${count > 0 ? `
                                 <span class="inline-flex items-center justify-center min-w-[22px] h-5 px-1.5 rounded-full text-[11px] font-extrabold ${
@@ -2091,13 +2340,15 @@
                             const psy = getPsychById(apt.psychologistId);
                             const c = getColorClasses(psy.color);
                             const hasReport = apt.report && apt.report.content;
+                            const endTime = getAppointmentEndTime(apt);
 
                             return `
                                 <div class="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-xs hover:border-sage-300 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
                                     <div class="flex items-start gap-4">
-                                        <div class="px-3 py-2 rounded-xl ${c.bg} ${c.text} border ${c.border} text-center shrink-0 min-w-[74px]">
-                                            <div class="text-base font-bold leading-none">${apt.time}</div>
-                                            <div class="text-[10px] font-medium mt-1 opacity-80">50 min</div>
+                                        <div class="px-3 py-2 rounded-xl ${c.bg} ${c.text} border ${c.border} text-center shrink-0 min-w-[84px]">
+                                            <div class="text-sm font-bold leading-tight">${apt.time}</div>
+                                            <div class="text-[10px] font-semibold mt-0.5">até ${endTime}</div>
+                                            <div class="text-[10px] opacity-75">${apt.durationMinutes || 50} min</div>
                                         </div>
                                         <div>
                                             <div class="flex flex-wrap items-center gap-2">
@@ -2114,6 +2365,12 @@
                                     </div>
 
                                     <div class="flex flex-wrap items-center gap-2 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 justify-end">
+                                        ${isAdmin && apt.status === 'Aguardando Validação' ? `
+                                            <button onclick="openValidateAttendanceModal('${apt.id}')" class="inline-flex items-center gap-1.5 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-xl">
+                                                <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Validar Presença
+                                            </button>
+                                        ` : ''}
+
                                         <button onclick="openSessionReportModal('${apt.id}')" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
                                             hasReport ? 'bg-sage-50 text-sage-700 border border-sage-200 hover:bg-sage-100' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                                         }">
@@ -2141,7 +2398,7 @@
 
         /**
          * ============================================================================
-         * 2. PSICÓLOGO VIEWS (REPASSES SEM PREÇO DA SESSÃO + RELATÓRIO POR PERÍODO)
+         * 2. PSICÓLOGO VIEWS
          * ============================================================================
          */
         function renderPsychologistFinance() {
@@ -2203,7 +2460,6 @@
                         </div>
                     </div>
 
-                    <!-- Filtro de Período (Data Inicial -> Data Final) -->
                     <div class="no-print bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-wrap items-end gap-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Data Inicial</label>
@@ -2223,7 +2479,6 @@
                         </div>
                     </div>
 
-                    <!-- Cards: Quanto Recebeu x Quanto Falta Receber -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div class="bg-gradient-to-br from-sage-700 to-sage-800 text-white p-5 rounded-2xl shadow-sm">
                             <div class="flex items-center justify-between mb-2">
@@ -2253,7 +2508,6 @@
                         </div>
                     </div>
 
-                    <!-- Tabela limpa: apenas Data/Hora, Paciente, Valor do Repasse e Status -->
                     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
                         <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                             <h3 class="font-semibold text-slate-800">Extrato de Repasses do Período</h3>
@@ -2354,7 +2608,7 @@
                                             ` : patApts.slice(0, 3).map(apt => `
                                                 <div class="flex items-center justify-between text-xs p-2 rounded-xl bg-slate-50/80 border border-slate-100">
                                                     <div>
-                                                        <span class="font-semibold text-slate-700">${formatDateBR(apt.date)} (${apt.time})</span>
+                                                        <span class="font-semibold text-slate-700">${formatDateBR(apt.date)} (${apt.time}–${getAppointmentEndTime(apt)})</span>
                                                         <span class="ml-1.5">${getStatusBadge(apt.status)}</span>
                                                     </div>
                                                     <button onclick="openSessionReportModal('${apt.id}')" class="font-semibold text-sage-700 hover:text-sage-900 underline">
@@ -2394,8 +2648,21 @@
          * 3. ATENDIMENTO (RECEPÇÃO) VIEWS
          * ============================================================================
          */
+        function buildSlotCandidatesForDay(dayApts) {
+            const baseMins = [
+                480, 540, 600, 660, 780, 800, 820, 840, 900, 960, 1020, 1080 // 08:00..18:00 + 13:00/13:20/13:40
+            ];
+            dayApts.forEach(apt => {
+                const startM = timeToMinutes(apt.time);
+                const endM = startM + Number(apt.durationMinutes || 50);
+                if (!baseMins.includes(endM) && endM <= 1260) {
+                    baseMins.push(endM);
+                }
+            });
+            return [...new Set(baseMins)].sort((a, b) => a - b);
+        }
+
         function renderReceptionAvailabilityGrid() {
-            const timeSlots = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
             const activePsychs = db.psychologists.filter(p => p.active);
 
             return `
@@ -2403,12 +2670,15 @@
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h2 class="text-xl font-bold text-slate-900">Grade de Disponibilidade por Psicólogo</h2>
-                            <p class="text-sm text-slate-500">Clique em qualquer horário <strong>Livre</strong> para designar um paciente.</p>
+                            <p class="text-sm text-slate-500">Sessões ocupam apenas a duração definida (30, 40, 50, 60 min ou livre) e liberam o próximo horário imediatamente após o término.</p>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
                             <input type="date" value="${selectedAgendaDate}" onchange="selectedAgendaDate = this.value; renderApp()" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold">
                             <button onclick="selectedAgendaDate = TODAY_STR; renderApp()" class="px-3 py-2 text-xs font-semibold bg-sage-600 text-white rounded-xl">
                                 Hoje
+                            </button>
+                            <button onclick="openAppointmentModal(null, '${selectedAgendaDate}', '13:00')" class="px-3 py-2 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl">
+                                + Horário / Valor Livre
                             </button>
                         </div>
                     </div>
@@ -2420,34 +2690,66 @@
                             </div>
                         ` : activePsychs.map(psych => {
                             const c = getColorClasses(psych.color);
-                            const dayApts = db.appointments.filter(a => a.psychologistId === psych.id && a.date === selectedAgendaDate && a.status !== 'Cancelada');
+                            const dayApts = db.appointments
+                                .filter(a => a.psychologistId === psych.id && a.date === selectedAgendaDate && a.status !== 'Cancelada')
+                                .sort((a, b) => a.time.localeCompare(b.time));
+
+                            const candidateMins = buildSlotCandidatesForDay(dayApts);
+
+                            const timelineItems = [];
+                            const renderedAptIds = new Set();
+
+                            candidateMins.forEach(slotMin => {
+                                const overlappingApt = dayApts.find(apt => {
+                                    const s = timeToMinutes(apt.time);
+                                    const e = s + Number(apt.durationMinutes || 50);
+                                    return slotMin >= s && slotMin < e;
+                                });
+
+                                if (overlappingApt) {
+                                    if (!renderedAptIds.has(overlappingApt.id)) {
+                                        renderedAptIds.add(overlappingApt.id);
+                                        timelineItems.push({ type: 'booked', apt: overlappingApt });
+                                    }
+                                } else {
+                                    const isStandardSlot = [480, 540, 600, 660, 840, 900, 960, 1020, 1080].includes(slotMin);
+                                    const isPostSessionSlot = dayApts.some(apt => (timeToMinutes(apt.time) + Number(apt.durationMinutes || 50)) === slotMin);
+                                    if (isStandardSlot || isPostSessionSlot) {
+                                        timelineItems.push({ type: 'free', slotStr: minutesToTime(slotMin), isPostSession: isPostSessionSlot && !isStandardSlot });
+                                    }
+                                }
+                            });
 
                             return `
                                 <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden flex flex-col">
                                     <div class="p-4 ${c.bg} border-b ${c.border}">
                                         <div class="flex items-center justify-between">
                                             <h3 class="font-bold text-slate-900">${psych.name}</h3>
-                                            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/80 ${c.text}">${dayApts.length} ocupados</span>
+                                            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/80 ${c.text}">${dayApts.length} sessão(ões)</span>
                                         </div>
                                         <p class="text-xs text-slate-600 mt-0.5">${psych.specialty}</p>
                                     </div>
 
                                     <div class="p-3 space-y-2 divide-y divide-slate-50">
-                                        ${timeSlots.map(slot => {
-                                            const booked = dayApts.find(a => a.time === slot);
-                                            if (booked) {
+                                        ${timelineItems.map(item => {
+                                            if (item.type === 'booked') {
+                                                const booked = item.apt;
                                                 const pat = getPatientById(booked.patientId);
+                                                const dur = booked.durationMinutes || 50;
+                                                const endTime = getAppointmentEndTime(booked);
                                                 return `
                                                     <div class="pt-2 first:pt-0">
                                                         <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-2">
                                                             <div class="min-w-0">
-                                                                <div class="flex items-center gap-2">
-                                                                    <span class="text-xs font-bold text-slate-700">${slot}</span>
+                                                                <div class="flex flex-wrap items-center gap-1.5">
+                                                                    <span class="text-xs font-bold text-slate-800 bg-white px-2 py-0.5 rounded border border-slate-200">${booked.time}–${endTime}</span>
+                                                                    <span class="text-[11px] font-semibold text-sage-700">${dur} min</span>
                                                                     <span class="font-semibold text-sm text-slate-900 truncate">${pat.name}</span>
                                                                 </div>
-                                                                <div class="mt-1 flex items-center gap-1.5">
+                                                                <div class="mt-1.5 flex flex-wrap items-center gap-1.5">
                                                                     ${getStatusBadge(booked.status)}
                                                                     ${getPaymentBadge(booked.paymentStatus)}
+                                                                    <span class="text-xs font-semibold text-slate-600">${formatCurrency(booked.value)}</span>
                                                                 </div>
                                                             </div>
                                                             <button onclick="openAppointmentModal('${booked.id}')" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-white rounded-lg shrink-0">
@@ -2459,12 +2761,12 @@
                                             } else {
                                                 return `
                                                     <div class="pt-2 first:pt-0">
-                                                        <button onclick="openAppointmentModal(null, '${selectedAgendaDate}', '${slot}', '${psych.id}')" class="w-full p-2.5 rounded-xl border border-dashed border-emerald-300 bg-emerald-50/40 hover:bg-emerald-50 text-emerald-800 flex items-center justify-between transition-colors group">
-                                                            <div class="flex items-center gap-2.5">
-                                                                <span class="text-xs font-bold">${slot}</span>
-                                                                <span class="text-xs font-medium text-emerald-700">Horário Disponível</span>
+                                                        <button onclick="openAppointmentModal(null, '${selectedAgendaDate}', '${item.slotStr}', '${psych.id}')" class="w-full p-2.5 rounded-xl border border-dashed ${item.isPostSession ? 'border-sky-300 bg-sky-50/50 hover:bg-sky-50 text-sky-900' : 'border-emerald-300 bg-emerald-50/40 hover:bg-emerald-50 text-emerald-800'} flex items-center justify-between transition-colors group">
+                                                            <div class="flex items-center gap-2">
+                                                                <span class="text-xs font-bold">${item.slotStr}</span>
+                                                                <span class="text-xs font-medium">${item.isPostSession ? 'Livre após sessão anterior' : 'Horário Disponível'}</span>
                                                             </div>
-                                                            <span class="text-xs font-semibold bg-white px-2.5 py-1 rounded-lg border border-emerald-200 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                                            <span class="text-xs font-semibold bg-white px-2.5 py-1 rounded-lg border border-slate-200 group-hover:bg-sage-600 group-hover:text-white group-hover:border-sage-600 transition-colors">
                                                                 + Agendar
                                                             </span>
                                                         </button>
@@ -2481,6 +2783,70 @@
             `;
         }
 
+        function openCheckinModal(aptId) {
+            const apt = db.appointments.find(a => a.id === aptId);
+            if (!apt) return;
+            const pat = getPatientById(apt.patientId);
+            const psy = getPsychById(apt.psychologistId);
+
+            document.getElementById('checkin-apt-id').value = apt.id;
+            document.getElementById('checkin-summary-box').innerHTML = `
+                <div class="font-bold text-slate-900">${pat.name}</div>
+                <div class="text-xs text-slate-500">${psy.name} • ${formatDateBR(apt.date)} às ${apt.time} (${apt.durationMinutes || 50} min)</div>
+            `;
+
+            const attendedFalse = apt.attendanceReport?.attended === false;
+            document.querySelectorAll('input[name="checkinAttended"]').forEach(r => {
+                r.checked = attendedFalse ? (r.value === 'false') : (r.value === 'true');
+            });
+            document.getElementById('checkin-notes').value = apt.attendanceReport?.notes || '';
+
+            openModal('modal-checkin');
+        }
+
+        async function submitAttendanceCheckin(e) {
+            e.preventDefault();
+            const aptId = document.getElementById('checkin-apt-id').value;
+            const attended = document.querySelector('input[name="checkinAttended"]:checked')?.value === 'true';
+            const notes = document.getElementById('checkin-notes').value.trim();
+
+            const attendancePayload = {
+                attended,
+                notes,
+                reportedBy: currentUserProfile.full_name,
+                reportedAt: new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
+            };
+
+            const fullUpdate = {
+                status: 'Aguardando Validação',
+                attendance_report: attendancePayload
+            };
+
+            let { error } = await supabaseClient
+                .from('appointments')
+                .update(fullUpdate)
+                .eq('id', aptId);
+
+            if (error && error.message && error.message.toLowerCase().includes('column')) {
+                const fallbackNotes = `[Check-in: ${attended ? 'Compareceu' : 'Não Compareceu'}${notes ? ' - ' + notes : ''}]`;
+                const retry = await supabaseClient
+                    .from('appointments')
+                    .update({ status: 'Aguardando Validação', notes: fallbackNotes })
+                    .eq('id', aptId);
+                error = retry.error;
+            }
+
+            if (error) {
+                showToast('Erro ao registrar check-in: ' + error.message, 'error');
+                return;
+            }
+
+            showToast(`Check-in (${attended ? 'Compareceu' : 'Não Compareceu'}) enviado para validação do Admin!`, 'success');
+            closeModal('modal-checkin');
+            await syncAllDataFromSupabase(false);
+            renderApp();
+        }
+
         function renderReceptionCheckin() {
             const todayApts = db.appointments
                 .filter(a => a.date === selectedAgendaDate && a.status !== 'Cancelada')
@@ -2491,7 +2857,7 @@
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h2 class="text-xl font-bold text-slate-900">Recepção, Check-in & Cobrança</h2>
-                            <p class="text-sm text-slate-500">Confirme a chegada dos pacientes, envie lembretes via WhatsApp e registre pagamentos.</p>
+                            <p class="text-sm text-slate-500">Informe no Check-in se o paciente compareceu ou não para validação do Administrador.</p>
                         </div>
                         <div class="flex items-center gap-2">
                             <input type="date" value="${selectedAgendaDate}" onchange="selectedAgendaDate = this.value; renderApp()" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold">
@@ -2522,24 +2888,31 @@
                                         const psy = getPsychById(apt.psychologistId);
                                         const cleanPhone = (pat.phone || '').replace(/\D/g, '');
                                         const waText = encodeURIComponent(`Olá ${pat.name.split(' ')[0]}! Lembramos da sua sessão com ${psy.name} no dia ${formatDateBR(apt.date)} às ${apt.time}. Podemos confirmar sua presença?`);
+                                        const attInfo = apt.attendanceReport;
 
                                         return `
                                             <tr class="hover:bg-slate-50/70">
-                                                <td class="py-3.5 px-4 font-bold text-slate-800">${apt.time}</td>
+                                                <td class="py-3.5 px-4 whitespace-nowrap">
+                                                    <div class="font-bold text-slate-800">${apt.time}–${getAppointmentEndTime(apt)}</div>
+                                                    <div class="text-[11px] text-slate-400">${apt.durationMinutes || 50} min</div>
+                                                </td>
                                                 <td class="py-3.5 px-4">
                                                     <div class="font-semibold text-slate-900">${pat.name}</div>
                                                     <div class="text-xs text-slate-500">${pat.phone}</div>
                                                 </td>
                                                 <td class="py-3.5 px-4 text-slate-700">${psy.name}</td>
-                                                <td class="py-3.5 px-4">${getStatusBadge(apt.status)}</td>
+                                                <td class="py-3.5 px-4">
+                                                    <div>${getStatusBadge(apt.status)}</div>
+                                                    ${attInfo ? `<div class="text-[11px] text-slate-500 mt-1">Informado: <strong>${attInfo.attended ? 'Compareceu' : 'Não Compareceu'}</strong></div>` : ''}
+                                                </td>
                                                 <td class="py-3.5 px-4">
                                                     <div>${getPaymentBadge(apt.paymentStatus, apt.paymentMethod)}</div>
                                                     <div class="text-xs text-slate-400 mt-0.5">${formatCurrency(apt.value)}</div>
                                                 </td>
                                                 <td class="py-3.5 px-4 text-right whitespace-nowrap">
                                                     <div class="inline-flex items-center gap-1.5">
-                                                        ${apt.status === 'Agendada' ? `
-                                                            <button onclick="quickConfirmArrival('${apt.id}')" class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-semibold rounded-lg">
+                                                        ${!['Realizada', 'Falta'].includes(apt.status) ? `
+                                                            <button onclick="openCheckinModal('${apt.id}')" class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-semibold rounded-lg">
                                                                 Check-in
                                                             </button>
                                                         ` : ''}
@@ -2567,6 +2940,31 @@
         }
 
         function renderPatientsDirectory(canSeeClinicalHistory = true) {
+            const q = (patientSearchQuery || '').trim().toLowerCase();
+            const qDigits = q.replace(/\D/g, '');
+
+            const filteredPatients = db.patients.filter(pat => {
+                if (!q) return true;
+                const psyName = getPsychById(pat.psychologistId).name || '';
+                const haystack = [
+                    pat.name,
+                    pat.cpf,
+                    pat.phone,
+                    pat.email,
+                    formatFullAddress(pat),
+                    psyName,
+                    pat.notes
+                ].filter(Boolean).join(' ').toLowerCase();
+
+                if (haystack.includes(q)) return true;
+
+                if (qDigits.length >= 2) {
+                    const digitsHaystack = `${pat.cpf || ''}${pat.phone || ''}${pat.zipCode || ''}`.replace(/\D/g, '');
+                    if (digitsHaystack.includes(qDigits)) return true;
+                }
+                return false;
+            });
+
             return `
                 <div class="space-y-6">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -2578,6 +2976,24 @@
                             <i data-lucide="user-plus" class="w-4 h-4"></i>
                             <span>Cadastrar Paciente</span>
                         </button>
+                    </div>
+
+                    <!-- Barra de Pesquisa -->
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
+                        <input
+                            type="text"
+                            id="patient-search-input"
+                            value="${patientSearchQuery.replace(/"/g, '&quot;')}"
+                            oninput="patientSearchQuery = this.value; renderApp(); restorePatientSearchFocus();"
+                            placeholder="Buscar paciente por nome, CPF, telefone, e-mail, endereço ou psicólogo..."
+                            class="w-full text-sm text-slate-800 placeholder-slate-400 focus:outline-none bg-transparent"
+                        >
+                        ${patientSearchQuery ? `
+                            <button type="button" onclick="patientSearchQuery = ''; renderApp();" class="text-xs font-semibold text-slate-500 hover:text-slate-800 px-2 py-1 rounded-lg hover:bg-slate-100">
+                                Limpar
+                            </button>
+                        ` : ''}
                     </div>
 
                     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
@@ -2593,9 +3009,9 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100 text-sm">
-                                    ${db.patients.length === 0 ? `
-                                        <tr><td colspan="5" class="py-8 text-center text-slate-400">Nenhum paciente cadastrado ainda.</td></tr>
-                                    ` : db.patients.map(pat => {
+                                    ${filteredPatients.length === 0 ? `
+                                        <tr><td colspan="5" class="py-8 text-center text-slate-400">${q ? 'Nenhum paciente encontrado para a busca.' : 'Nenhum paciente cadastrado ainda.'}</td></tr>
+                                    ` : filteredPatients.map(pat => {
                                         const psy = getPsychById(pat.psychologistId);
                                         return `
                                             <tr class="hover:bg-slate-50/70">
@@ -2635,6 +3051,15 @@
             `;
         }
 
+        function restorePatientSearchFocus() {
+            const input = document.getElementById('patient-search-input');
+            if (input) {
+                input.focus();
+                const len = input.value.length;
+                input.setSelectionRange(len, len);
+            }
+        }
+
         /**
          * ============================================================================
          * MODALS & PERSISTÊNCIA DIRETA NO SUPABASE
@@ -2651,6 +3076,22 @@
             const el = document.getElementById(id);
             el.classList.add('hidden');
             el.classList.remove('flex');
+        }
+
+        function setDurationControls(minutesVal) {
+            const dur = Number(minutesVal || 50);
+            const presetSelect = document.getElementById('apt-duration-preset');
+            const customInput = document.getElementById('apt-duration-custom');
+            if ([30, 40, 50, 60].includes(dur)) {
+                presetSelect.value = String(dur);
+                customInput.classList.add('hidden');
+                customInput.value = String(dur);
+            } else {
+                presetSelect.value = 'custom';
+                customInput.classList.remove('hidden');
+                customInput.value = String(dur);
+            }
+            updateEndTimePreview();
         }
 
         // --- Agendamentos ---
@@ -2675,6 +3116,7 @@
                 patSelect.value = apt.patientId;
                 document.getElementById('apt-date').value = apt.date;
                 document.getElementById('apt-time').value = apt.time;
+                setDurationControls(apt.durationMinutes || 50);
                 document.getElementById('apt-value').value = apt.value;
                 document.getElementById('apt-status').value = apt.status;
                 document.getElementById('apt-payment-status').value = apt.paymentStatus;
@@ -2691,6 +3133,7 @@
                 }
                 document.getElementById('apt-date').value = defaultDate || TODAY_STR;
                 document.getElementById('apt-time').value = defaultTime || '09:00';
+                setDurationControls(50);
                 document.getElementById('apt-status').value = 'Agendada';
                 document.getElementById('apt-payment-status').value = 'Pendente';
                 document.getElementById('apt-payment-method').value = '';
@@ -2720,6 +3163,7 @@
             const patientId = document.getElementById('apt-patient').value;
             const date = document.getElementById('apt-date').value;
             const time = document.getElementById('apt-time').value;
+            const durationMinutes = getDurationInputValue();
             const value = parseFloat(document.getElementById('apt-value').value) || 0;
             const status = document.getElementById('apt-status').value;
             const paymentStatus = document.getElementById('apt-payment-status').value;
@@ -2731,24 +3175,26 @@
                 return;
             }
 
-            const conflict = db.appointments.find(a =>
-                a.id !== id &&
-                a.psychologistId === psychologistId &&
-                a.date === date &&
-                a.time === time &&
-                a.status !== 'Cancelada'
-            );
+            const newStart = timeToMinutes(time);
+            const conflict = db.appointments.find(a => {
+                if (a.id === id) return false;
+                if (a.psychologistId !== psychologistId || a.date !== date || a.status === 'Cancelada') return false;
+                return hasTimeOverlap(newStart, durationMinutes, timeToMinutes(a.time), Number(a.durationMinutes || 50));
+            });
+
             if (conflict) {
-                showToast('Conflito de horário! Este psicólogo já possui paciente agendado neste horário.', 'error');
+                const cEnd = getAppointmentEndTime(conflict);
+                showToast(`Conflito de horário! Este psicólogo tem sessão das ${conflict.time} às ${cEnd}.`, 'error');
                 return;
             }
 
-            const payload = {
+            const fullPayload = {
                 id: id || ('apt-' + Date.now()),
                 psychologist_id: psychologistId,
                 patient_id: patientId,
                 date,
                 time,
+                duration_minutes: durationMinutes,
                 value,
                 status,
                 payment_status: paymentStatus,
@@ -2756,7 +3202,14 @@
                 notes
             };
 
-            const { error } = await supabaseClient.from('appointments').upsert(payload);
+            let { error } = await supabaseClient.from('appointments').upsert(fullPayload);
+
+            if (error && error.message && error.message.toLowerCase().includes('column')) {
+                const { duration_minutes, ...fallbackPayload } = fullPayload;
+                const retry = await supabaseClient.from('appointments').upsert(fallbackPayload);
+                error = retry.error;
+            }
+
             if (error) {
                 showToast('Erro ao salvar agendamento: ' + error.message, 'error');
                 return;
@@ -2766,22 +3219,6 @@
             closeModal('modal-appointment');
             selectedAgendaDate = date;
             selectedCalendarMonth = date.slice(0, 7);
-            await syncAllDataFromSupabase(false);
-            renderApp();
-        }
-
-        async function quickConfirmArrival(aptId) {
-            const { error } = await supabaseClient
-                .from('appointments')
-                .update({ status: 'Confirmada' })
-                .eq('id', aptId);
-
-            if (error) {
-                showToast('Erro ao confirmar presença: ' + error.message, 'error');
-                return;
-            }
-
-            showToast('Presença confirmada na recepção!', 'success');
             await syncAllDataFromSupabase(false);
             renderApp();
         }
@@ -2832,8 +3269,8 @@
             const psy = getPsychById(apt.psychologistId);
 
             document.getElementById('report-apt-id').value = apt.id;
-            document.getElementById('report-modal-subtitle').textContent = `${pat.name} • ${formatDateBR(apt.date)} (${apt.time}) • ${psy.name}`;
-            document.getElementById('report-status').value = apt.status === 'Agendada' || apt.status === 'Confirmada' ? 'Realizada' : apt.status;
+            document.getElementById('report-modal-subtitle').textContent = `${pat.name} • ${formatDateBR(apt.date)} (${apt.time}–${getAppointmentEndTime(apt)}) • ${psy.name}`;
+            document.getElementById('report-status').value = ['Agendada', 'Confirmada', 'Aguardando Validação'].includes(apt.status) ? 'Realizada' : apt.status;
             document.getElementById('report-mood').value = apt.report?.mood || 'Estável / Receptivo';
             document.getElementById('report-content').value = apt.report?.content || '';
             document.getElementById('report-next-steps').value = apt.report?.nextSteps || '';
@@ -2899,7 +3336,7 @@
                     <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50 space-y-2">
                         <div class="flex flex-wrap items-center justify-between gap-2">
                             <div class="flex items-center gap-2">
-                                <span class="font-bold text-sm text-slate-800">${formatDateBR(apt.date)} às ${apt.time}</span>
+                                <span class="font-bold text-sm text-slate-800">${formatDateBR(apt.date)} (${apt.time}–${getAppointmentEndTime(apt)})</span>
                                 ${getStatusBadge(apt.status)}
                             </div>
                             <button onclick="closeModal('modal-patient-history'); openSessionReportModal('${apt.id}')" class="text-xs font-semibold text-sage-700 hover:underline">
@@ -3067,7 +3504,6 @@
 
             let { error } = await supabaseClient.from('patients').upsert(fullPayload);
 
-            // Caso o SQL ainda não tenha sido rodado com as colunas extras, salva os campos base sem travar
             if (error && error.message && error.message.toLowerCase().includes('column')) {
                 const extraInfo = [
                     fullPayload.email ? `E-mail NFS-e: ${fullPayload.email}` : '',
